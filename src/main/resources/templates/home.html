@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="fragments/headImports :: head"></head>
+
+    <body>
+        <nav th:replace="fragments/navbar :: nav"></nav>   
+        
+        <header th:replace="fragments/carousel :: carousel"></header>   
+        <!-- Page Content -->
+        <div class="container">
+    
+          <h1 class="my-4" th:text="${optionTitle}"></h1>
+          <div th:replace="fragments/optionsList :: options"></div>   
+    
+          <!-- Portfolio Section -->
+          <h2>Sesyon ke nou fe deja</h2>
+          <div th:replace="fragments/videos :: videos"></div>   
+         
+          <div th:replace="fragments/about :: about"></div>
+         
+          <hr/>
+    
+          <div th:replace="fragments/join :: join"></div>
+    
+        </div>
+        <!-- /.container -->
+    
+        <footer th:replace="fragments/footer :: footer"></footer>   
+    </body>
+</html>

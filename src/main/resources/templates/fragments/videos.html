@@ -1,0 +1,18 @@
+  <div class="row" th:fragment="videos">
+    <div class="col-lg-4 col-sm-6 portfolio-item" th:each="fbVideo : ${fbVideos}">
+      <div class="card h-100">
+        <a href="#">
+            <div class="facebook-responsive">
+                <iframe th:src="@{${'https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2F' + pageVideoPath + '%2F' + fbVideo.id }}" width="560" height="315" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>
+            </div>
+        </a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="#" th:text="${fbVideo.title}"></a>
+          </h4>
+          <p class="card-text" th:text="${fbVideo.description}"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.row -->

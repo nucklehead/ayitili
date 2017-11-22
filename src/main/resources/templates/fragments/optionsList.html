@@ -1,0 +1,16 @@
+
+      <!-- Marketing Icons Section -->
+      <div class="row" th:fragment="options">
+        <div class="col-lg-4 mb-4" th:each="option : ${options}">
+          <div class="card h-100">
+            <h4 class="card-header" th:text="${option.name}"></h4>
+            <div class="card-body">
+              <p class="card-text" th:text="${option.description}"></p>
+            </div>
+            <div class="card-footer">
+              <a href="#" class="btn btn-primary">Apran Plis</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.row -->

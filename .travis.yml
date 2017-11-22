@@ -1,0 +1,17 @@
+---
+services:
+  - mongodb
+
+language: java
+jdk:
+  - oraclejdk8
+  - openjdk8
+
+before_script:
+  - sleep 15
+  - mongo mydatabase --eval 'db.createUser({user:"admin",pwd:"password",roles:[{ role:"userAdminAnyDatabase",db:"admin" }] });'
+
+deploy:
+  provider: heroku
+  api_key: $HEROKU_KEY
+  app: ayitili
