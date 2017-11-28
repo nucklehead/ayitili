@@ -1,0 +1,41 @@
+ <div class="container" th:fragment="objectList" xmlns:th="http://www.thymeleaf.org">
+     <div class="row">
+         <div class="col-md" th:each="field: ${object.findBootstrapHtmlDisplayFieldNames()}">
+             <strong th:text="${field}"></strong>
+         </div>
+     </div>
+     <hr class="divider"/>
+
+     <div th:each="object: ${objects}">
+         <div class="row">
+             <div class="col-md" th:each="bootstrapField: ${object.classToBootstrapDisplay()}" th:utext="${bootstrapField.htmlCode}"></div>
+         </div>
+         <hr class="divider"/>
+     </div>
+
+     <hr class="divider"/>
+     <div class="row">
+         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addObjectModal" th:text="${addButtonText}"></button>
+     </div>
+
+     <div class="modal fade" id="addObjectModal" tabindex="-1" role="dialog">
+         <div class="modal-dialog" role="document">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h5 class="modal-title" th:text="${addButtonText}"></h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                     </button>
+                 </div>
+                 <div class="modal-body">
+                     <form th:replace="fragments/forms/modelInput :: modelEdit(path='/api/banner', object=${object})"></form>
+                 </div>
+                 <div class="modal-footer">
+                     <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                     <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                 </div>
+             </div>
+         </div>
+     </div>
+
+ </div>

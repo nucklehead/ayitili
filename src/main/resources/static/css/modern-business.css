@@ -6,6 +6,7 @@
 
 body {
   padding-top: 54px;
+  background-color:lightgray;
 }
 
 @media (min-width: 992px) {
@@ -14,7 +15,7 @@ body {
   }
 }
 
-.carousel-item {
+#bannerCarousel .carousel-item {
   height: 65vh;
   min-height: 300px;
   background: no-repeat center center scroll;
@@ -26,4 +27,25 @@ body {
 
 .portfolio-item {
   margin-bottom: 30px;
+}
+
+#bookCarousel .carousel-caption {
+  position: relative;
+  left: auto;
+  right: auto;
+}
+
+.book-text-info{
+  color: black;
+}
+
+.navbar-brand {
+  line-height:15px;
+  padding-top:20px;
+  padding-bottom:10px;
+}
+
+.navbar-brand small {
+  display:block;
+  font-size:10px;
 }

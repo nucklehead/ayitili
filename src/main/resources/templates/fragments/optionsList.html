@@ -1,6 +1,6 @@
 
       <!-- Marketing Icons Section -->
-      <div class="row" th:fragment="options">
+      <div class="row" th:fragment="options" xmlns:th="http://www.thymeleaf.org">
         <div class="col-lg-4 mb-4" th:each="option : ${options}">
           <div class="card h-100">
             <h4 class="card-header" th:text="${option.name}"></h4>
