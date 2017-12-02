@@ -72,12 +72,6 @@ public class SecurityConfig {
   }
 
   @Bean
-  public PasswordEncoder passwordEncoder() {
-    PasswordEncoder encoder = new BCryptPasswordEncoder();
-    return encoder;
-  }
-
-  @Bean
   public DaoAuthenticationProvider daoAuthenticationProvider(
       PasswordEncoder passwordEncoder, MongoDBUserDetailsService mongoDBUserDetailsService) {
     DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
