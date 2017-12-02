@@ -1,7 +1,5 @@
 package com.colorofhope.ayitili.model;
 
-import org.springframework.data.annotation.Id;
-
 public class Sponsor extends DBModel {
   public String name;
   public String description;

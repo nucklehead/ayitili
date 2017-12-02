@@ -1,7 +1,5 @@
 package com.colorofhope.ayitili.model;
 
-import org.springframework.data.annotation.Id;
-
 public class Comment extends DBModel {
   public String user;
   public String content;

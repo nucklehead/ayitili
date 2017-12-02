@@ -1,15 +1,11 @@
 package com.colorofhope.ayitili.rest.controllers;
 
-import com.colorofhope.ayitili.model.Account;
 import com.colorofhope.ayitili.model.DBModel;
-import com.colorofhope.ayitili.repository.AccountRepository;
 import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.util.List;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.web.bind.annotation.*;
 
 @Api
 public abstract class DefaultController<R extends MongoRepository<M, String>, M extends DBModel> {

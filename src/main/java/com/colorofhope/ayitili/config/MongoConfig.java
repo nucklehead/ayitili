@@ -12,12 +12,13 @@ import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 @Configuration
 public class MongoConfig {
 
-    @Value("${spring.data.mongodb.uri}")
-    String mongoUri;
+  @Value("${spring.data.mongodb.uri}")
+  String mongoUri;
 
-    @Bean
-    public GridFsTemplate gridFsTemplate(MongoClient mongo, MongoConverter mc) throws Exception {
-        //if we use the same Mongo instance as the standard mongo factory, we get issues so we create a new SimpleMongoDbFactory using the new client instance
-        return new GridFsTemplate(new SimpleMongoDbFactory(new MongoClientURI(mongoUri)), mc);
-    }
+  @Bean
+  public GridFsTemplate gridFsTemplate(MongoClient mongo, MongoConverter mc) throws Exception {
+    // if we use the same Mongo instance as the standard mongo factory, we get issues so we create a
+    // new SimpleMongoDbFactory using the new client instance
+    return new GridFsTemplate(new SimpleMongoDbFactory(new MongoClientURI(mongoUri)), mc);
+  }
 }

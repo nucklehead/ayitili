@@ -3,7 +3,6 @@ package com.colorofhope.ayitili.rest.controllers;
 import com.colorofhope.ayitili.model.Account;
 import com.colorofhope.ayitili.model.Token;
 import com.colorofhope.ayitili.repository.AccountRepository;
-import io.swagger.annotations.Api;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

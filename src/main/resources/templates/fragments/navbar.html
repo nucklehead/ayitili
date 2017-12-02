@@ -1,5 +1,6 @@
  <!-- Navigation -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="nav" xmlns:th="http://www.thymeleaf.org">
+ <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="nav"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
       <div class="container">
         <a class="navbar-brand" href="/" th:inline="text">[[${siteName}]] <small th:text="${siteSubtitle}"></small></a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,6 +11,12 @@
             <li class="nav-item" th:each="navLinkKV : ${navLinks}">
               <a class="nav-link" th:href="${navLinkKV.value}" th:text="${navLinkKV.key}"></a>
             </li>
+            <li class="nav-item" th:each="navButtonKV : ${navButtons}">
+              <button class="btn btn-info" type="button" data-toggle="modal" th:attr="data-target=${navButtonKV.value}" th:text="${navButtonKV.key}"></button>
+            </li>
+            <form class="form-inline" th:action="${navFormKV.value}" th:each="navFormKV : ${navForms}">
+              <button class="btn btn-info" type="submit" th:text="${navFormKV.key}"></button>
+            </form>
           </ul>
         </div>
       </div>

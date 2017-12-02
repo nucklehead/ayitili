@@ -2,9 +2,9 @@
   <div class="carousel slide" data-ride="carousel" data-type="multi" data-interval="3000" id="bookCarousel">
     <div class="carousel-inner">
       <!-- Slide One - Set the background image for this slide in the line below -->
-      <div th:each="booklist,iter : ${books}" class="carousel-item" th:classappend="${iter.index == 0}?active">
+      <div th:each="booklist,iter : ${books}" class="carousel-item container" th:classappend="${iter.index == 0}?active">
         <div class="row">
-          <div th:each="book : ${booklist}" th:class="${'col-' + bootstrapColumns/numBooksPerCarousel}" >
+          <div th:each="book : ${booklist}" th:class="${'col'}" >
             <a href="#"><img th:src="${'/images/' + book.image.id + '.jpg'}" width="100px" class="img-responsive mx-auto d-block"/></a>
             <div class="carousel-caption d-none d-md-block">
               <div class="text-center book-text-info" th:text="${book.title}"></div>

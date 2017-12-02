@@ -1,8 +1,6 @@
 package com.colorofhope.ayitili.rest.controllers;
 
-import com.colorofhope.ayitili.model.BookCheckout;
 import com.colorofhope.ayitili.model.Category;
-import com.colorofhope.ayitili.repository.BookCheckoutRepository;
 import com.colorofhope.ayitili.repository.CategoryRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

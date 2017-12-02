@@ -1,13 +1,9 @@
 package com.colorofhope.ayitili.model;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import java.util.List;
-
 public class MemberAction extends DBModel {
-  @DBRef
-  public Account member;
+  @DBRef public Account member;
   public MemberActionType type;
 
   public MemberAction() {}

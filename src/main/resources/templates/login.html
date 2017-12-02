@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="fragments/headImports :: head"></head>
+
+    <body class="bg-dark">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="text-center text-white mb-4" th:text="${loginTitle}"></h2>
+                    <div class="row">
+                        <div class="col-md-6 mx-auto">
+                            <span class="anchor" id="formLoginAnchor"></span>
+                            <div class="card rounded-0">
+                                <div class="card-header">
+                                    <h3 class="mb-0" th:text="${loginButtonText}"></h3>
+                                </div>
+                                <div class="card-body">
+                                   <form th:replace="fragments/forms/login :: form(path='/login')"></form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
