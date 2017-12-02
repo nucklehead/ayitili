@@ -1,9 +1,5 @@
 package com.colorofhope.ayitili.model;
 
-import org.springframework.data.annotation.Id;
-
-import java.util.List;
-
 public class Category extends DBModel {
   public String name;
   public String description;

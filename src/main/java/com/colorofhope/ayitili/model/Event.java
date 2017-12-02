@@ -1,7 +1,6 @@
 package com.colorofhope.ayitili.model;
 
 import java.util.Date;
-import org.springframework.data.annotation.Id;
 
 public class Event extends DBModel {
   public String title;

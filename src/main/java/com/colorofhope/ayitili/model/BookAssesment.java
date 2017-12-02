@@ -2,11 +2,10 @@ package com.colorofhope.ayitili.model;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
-public class BookAssesment extends MemberAction{
+public class BookAssesment extends MemberAction {
 
   public String content;
-  @DBRef
-  public Book book;
+  @DBRef public Book book;
   public String assessment;
 
   public BookAssesment() {}

@@ -1,30 +1,21 @@
 package com.colorofhope.ayitili.rest.controllers;
 
-import com.colorofhope.ayitili.model.Banner;
 import com.colorofhope.ayitili.model.Book;
-import com.colorofhope.ayitili.model.Option;
 import com.colorofhope.ayitili.repository.BookRepository;
 import com.colorofhope.ayitili.repository.DBImageRepository;
-import com.colorofhope.ayitili.repository.OptionRepository;
-import io.swagger.annotations.Api;
-
 import java.io.IOException;
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-
 @RestController
 @RequestMapping("/api/book")
 public class BookController extends DefaultController<BookRepository, Book> {
-  @Autowired
-  GridFsTemplate gridFsTemplate;
+  @Autowired GridFsTemplate gridFsTemplate;
 
-  @Autowired
-  DBImageRepository dbImageRepository;
+  @Autowired DBImageRepository dbImageRepository;
 
   public BookController(BookRepository bookRepository) {
     this.repository = bookRepository;

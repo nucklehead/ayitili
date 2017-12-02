@@ -1,14 +1,12 @@
 package com.colorofhope.ayitili.model;
 
+import java.time.Duration;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import java.time.Duration;
-
-public class BookCheckout extends MemberAction{
+public class BookCheckout extends MemberAction {
 
   public String content;
-  @DBRef
-  public Book book;
+  @DBRef public Book book;
   public Duration duration;
 
   public BookCheckout() {}

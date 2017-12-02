@@ -1,0 +1,18 @@
+<form class="form" role="form" autocomplete="off" th:action="@{${path}}" method="post" th:fragment="form" xmlns:th="http://www.thymeleaf.org">
+    <div class="form-group">
+        <label for="username" th:text="${usernameLable}"></label>
+        <input type="text" class="form-control form-control-lg rounded-0" name="username" id="username" required=""/>
+    </div>
+    <div class="form-group">
+        <label th:text="${passwordLabel}"></label>
+        <input type="password" class="form-control form-control-lg rounded-0" name="password" id="pasword" required="" autocomplete="new-password"/>
+    </div>
+    <div>
+        <label class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" name="remember"/>
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description small" th:text="${rememberText}"></span>
+        </label>
+    </div>
+    <button type="submit" class="btn btn-success btn-lg float-right" th:text="${loginButtonText}"></button>
+</form>

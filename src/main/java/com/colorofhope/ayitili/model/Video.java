@@ -1,6 +1,5 @@
 package com.colorofhope.ayitili.model;
 
-
 public class Video extends DBModel {
   public String link;
   public String title;

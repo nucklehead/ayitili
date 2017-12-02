@@ -1,17 +1,13 @@
 package com.colorofhope.ayitili.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-
 import java.util.List;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 public class Author extends DBModel {
   public String firstName;
   public String lastName;
   public String biography;
-  @DBRef
-  public List<Category> categories;
-
+  @DBRef public List<Category> categories;
 
   public Author() {}
 

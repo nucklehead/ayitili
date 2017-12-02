@@ -1,6 +1,5 @@
 package com.colorofhope.ayitili.repository;
 
-import com.colorofhope.ayitili.model.Category;
 import com.colorofhope.ayitili.model.MemberAction;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
