@@ -25,9 +25,10 @@ public class VideoController extends DefaultController<VideoRepository, Video> {
   @RequestMapping(method = RequestMethod.GET, path = "/facebook")
   public List<VideoList> getFacebookVideos() {
     FacebookClient facebookClient = new DefaultFacebookClient(facebookToken, Version.VERSION_2_9);
-    Connection<VideoList> fbVideos =
-        facebookClient.fetchConnection(
-            "Aigleinfo/videos", VideoList.class, Parameter.with("limit", 100));
-    return fbVideos.getData();
+//    Connection<VideoList> fbVideos =
+//        facebookClient.fetchConnection(
+//            "Aigleinfo/videos", VideoList.class, Parameter.with("limit", 100));
+//    return fbVideos.getData();
+    return null;
   }
 }

@@ -6,5 +6,7 @@ public enum AccounteType {
   @BootstrapLabel("Bibliyotekè")
   LIBRARIAN,
   @BootstrapLabel("Manm")
-  MEMBER
+  MEMBER,
+  @BootstrapLabel("Visitè")
+  GUEST_MEMBER,
 }

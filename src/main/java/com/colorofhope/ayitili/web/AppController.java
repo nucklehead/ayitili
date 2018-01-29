@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @Api
 public class AppController {
@@ -82,5 +84,16 @@ public class AppController {
     model.addAttribute("books", bookRepository.findAll());
     model.addAttribute("book", new Book());
     return "bookList";
+  }
+
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @RequestMapping(method = RequestMethod.GET, path = "**/edit")
+  public String editCurrentPage(Model model, HttpServletRequest request) {
+    String requestURL = request.getRequestURI();
+    requestURL.replaceAll("/edit","");
+    model.addAttribute("title", "Ayiti li - Banyè");
+    model.addAttribute("banners", bannerRepository.findAll());
+    model.addAttribute("banner", new Banner());
+    return "bannerList";
   }
 }
