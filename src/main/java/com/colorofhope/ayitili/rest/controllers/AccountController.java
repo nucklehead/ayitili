@@ -3,6 +3,7 @@ package com.colorofhope.ayitili.rest.controllers;
 import com.colorofhope.ayitili.model.Account;
 import com.colorofhope.ayitili.repository.AccountRepository;
 import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +18,14 @@ public class AccountController extends DefaultController<AccountRepository, Acco
   }
 
   @Override
-  public Account create(Account model) throws IOException {
+  public Object create(Account model, String returnPath) throws IOException {
     model.password = passwordEncoder.encode(model.password);
-    return super.create(model);
+    return super.create(model, returnPath);
   }
 
   @Override
-  public Account update(String id, Account model) throws IOException {
+  public Object update(String id, Account model, String returnPath) throws IOException {
     model.password = passwordEncoder.encode(model.password);
-    return super.update(id, model);
+    return super.update(id, model, returnPath);
   }
 }

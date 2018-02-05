@@ -5,6 +5,7 @@ import com.colorofhope.ayitili.model.Banner;
 import com.colorofhope.ayitili.model.Book;
 import com.colorofhope.ayitili.repository.BannerRepository;
 import com.colorofhope.ayitili.repository.BookRepository;
+import com.colorofhope.ayitili.rest.controllers.AccountController;
 import com.colorofhope.ayitili.rest.controllers.OptionController;
 import com.colorofhope.ayitili.rest.controllers.VideoController;
 import com.google.common.collect.Lists;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @Controller
 @Api
@@ -29,6 +31,10 @@ public class AppController {
   @Autowired BannerRepository bannerRepository;
 
   @Autowired BookRepository bookRepository;
+
+  @Autowired
+  AccountController accountController;
+
 
   @RequestMapping(method = RequestMethod.GET, path = "/")
   public String index(Model model) {
@@ -61,6 +67,11 @@ public class AppController {
     return "login";
   }
 
+  @RequestMapping(method = RequestMethod.POST, path = "/signup")
+  public Object signup(Account account) throws IOException {
+    return accountController.create(account, "/");
+  }
+
   @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('LIBRARIAN')")
   @RequestMapping(method = RequestMethod.GET, path = "/ajouteManm")
   public String addMember(Model model) {
@@ -90,10 +101,8 @@ public class AppController {
   @RequestMapping(method = RequestMethod.GET, path = "**/edit")
   public String editCurrentPage(Model model, HttpServletRequest request) {
     String requestURL = request.getRequestURI();
-    requestURL.replaceAll("/edit","");
-    model.addAttribute("title", "Ayiti li - Banyè");
-    model.addAttribute("banners", bannerRepository.findAll());
-    model.addAttribute("banner", new Banner());
-    return "bannerList";
+    String pageUrl = requestURL.replaceAll("/edit","");
+    model.addAttribute("editMode", true);
+    return "forward:" + pageUrl ;
   }
 }

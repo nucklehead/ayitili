@@ -1,8 +1,17 @@
 package com.colorofhope.ayitili.web;
 
 import com.colorofhope.ayitili.model.AccounteType;
+
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.colorofhope.ayitili.model.Nav;
+import com.colorofhope.ayitili.model.NavType;
+import com.colorofhope.ayitili.repository.NavRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,6 +19,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice
 public class ModelAttributeControllerAdvice {
+  @Autowired
+  NavRepository navRepository;
+
+  @ModelAttribute("iniere")
+  public String test(Authentication user){
+//    Map<String, String> links1 = navlinks(user);
+//    links1.putAll(navButtons(null));
+//    links1.putAll(navForms(user));
+//    List<Nav> myNavs = links1.entrySet().stream().map(nav -> new Nav(nav.getKey(), nav.getValue(), NavType.INTERNAL, Arrays.asList(AccounteType.GUEST_MEMBER), Arrays.asList())).collect(Collectors.toList());
+//    navRepository.save(myNavs);
+    return "tesy";
+  }
 
   @ModelAttribute("navLinks")
   public Map navlinks(Authentication user) {
@@ -92,5 +113,20 @@ public class ModelAttributeControllerAdvice {
   @ModelAttribute("loginButtonText")
   public String loginButtonText() {
     return "Antre";
+  }
+
+  @ModelAttribute("changeButtonText")
+  public String changeButtonText() {
+    return "Change";
+  }
+
+  @ModelAttribute("deleteButtonText")
+  public String deleteButtonText() {
+    return "Efase";
+  }
+
+  @ModelAttribute("signupButtonText")
+  public String signupButtonText() {
+    return "Anrejistre";
   }
 }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Api
 public abstract class DefaultController<R extends MongoRepository<M, String>, M extends DBModel> {
@@ -17,8 +18,12 @@ public abstract class DefaultController<R extends MongoRepository<M, String>, M 
   }
 
   @RequestMapping(method = RequestMethod.POST, path = "")
-  public M create(M model) throws IOException {
-    return repository.save(model);
+  public Object create(M model, String returnPath) throws IOException {
+    M newModel = repository.save(model);
+    if(returnPath != null && !returnPath.isEmpty()){
+      return new RedirectView(returnPath);
+    }
+    return newModel;
   }
 
   @RequestMapping(method = RequestMethod.GET, path = "/{id}")
@@ -27,13 +32,19 @@ public abstract class DefaultController<R extends MongoRepository<M, String>, M 
   }
 
   @RequestMapping(method = RequestMethod.PUT, path = "/{id}")
-  public M update(@PathVariable String id, M model) throws IOException {
+  public Object update(@PathVariable String id, M model, String returnPath) throws IOException {
     model.id = id;
-    return repository.save(model);
+    M existingModel = repository.findOne(id);
+    existingModel.merge(model);
+    M newModel = repository.save(existingModel);
+    if(returnPath != null && !returnPath.isEmpty()){
+      return new RedirectView(returnPath);
+    }
+    return newModel;
   }
 
   @RequestMapping(method = RequestMethod.DELETE, path = "/{id}")
-  public void delete(@PathVariable String accountID) {
-    repository.delete(accountID);
+  public void delete(@PathVariable String id) {
+    repository.delete(id);
   }
 }

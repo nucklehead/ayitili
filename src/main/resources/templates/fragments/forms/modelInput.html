@@ -1,4 +1,6 @@
- <form action="#" enctype="multipart/form-data" th:action="@{${path}}" th:object="${object}" method="post" th:fragment="modelEdit" xmlns:th="http://www.thymeleaf.org">
+ <form enctype="multipart/form-data" th:attr="id=${path.substring(1).replaceAll('/', '-') + '-edit-form'}"
+       th:attrappend="ng-submit='submitForm(\'' + ${path.substring(1).replaceAll('/', '-') + '-edit-form'} + '\', \''+ ${path} +'\')'"
+       th:object="${object}" th:fragment="modelEdit" xmlns:th="http://www.thymeleaf.org">
      <div th:each="bootstrapField: ${object.classToBootstrapForm()}" th:utext="${bootstrapField.htmlCode}"></div>
      <button type="submit" class="btn btn-primary" th:text="${submitButtonText}"></button>
  </form>

@@ -1,23 +1,32 @@
  <!-- Navigation -->
- <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="nav"
-      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-      <div class="container">
-        <a class="navbar-brand" href="/" th:inline="text">[[${siteName}]] <small th:text="${siteSubtitle}"></small></a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item" th:each="navLinkKV : ${navLinks}">
-              <a class="nav-link" th:href="${navLinkKV.value}" th:text="${navLinkKV.key}"></a>
-            </li>
-            <li class="nav-item" th:each="navButtonKV : ${navButtons}">
-              <button class="btn btn-info" type="button" data-toggle="modal" th:attr="data-target=${navButtonKV.value}" th:text="${navButtonKV.key}"></button>
-            </li>
-            <form class="form-inline" th:action="${navFormKV.value}" th:each="navFormKV : ${navForms}">
-              <button class="btn btn-info" type="submit" th:text="${navFormKV.key}"></button>
-            </form>
-          </ul>
-        </div>
-      </div>
-    </nav>
+ <div th:fragment="nav"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" th:attr="ng-controller=${editMode}?editController">
+   <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+     <div class="container">
+       <a class="navbar-brand" href="/" th:inline="text">[[${siteName}]] <small th:text="${siteSubtitle}"></small></a>
+       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+       </button>
+       <div class="collapse navbar-collapse" id="navbarResponsive">
+         <ul class="navbar-nav ml-auto">
+           <li class="nav-item" th:each="navLinkKV : ${navLinks}">
+             <a class="nav-link" th:href="${navLinkKV.value}" th:text="${navLinkKV.key}"></a>
+           </li>
+           <li class="nav-item" th:each="navButtonKV : ${navButtons}">
+             <button class="btn btn-info" type="button" data-toggle="modal" th:attr="data-target=${navButtonKV.value}" th:text="${navButtonKV.key}"></button>
+           </li>
+           <form class="form-inline" th:action="${navFormKV.value}" th:each="navFormKV : ${navForms}">
+             <button class="btn btn-info" type="submit" th:text="${navFormKV.key}"></button>
+           </form>
+         </ul>
+       </div>
+       <button th:if="${editMode}" type="button" class="btn btn-danger btn-circle" style="margin-left: 20px" ng-click="showModal('api-nav')">
+         <span class="fa fa-edit fa-lg"></span>
+       </button>
+     </div>
+   </nav>
+
+   <div th:replace="fragments/modals/objectListModal :: objectListModal(path='/api/nav', objects=${navs}, object=${nav})"></div>
+
+ </div>
+

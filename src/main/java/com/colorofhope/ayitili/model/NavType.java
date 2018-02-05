@@ -1,11 +1,11 @@
 package com.colorofhope.ayitili.model;
 
 public enum NavType {
-  @BootstrapLabel("Lyen")
+  @BootstrapLabel("Lyen Extèn")
   EXTERNAL,
-  @BootstrapLabel("Bibliyotekè")
+  @BootstrapLabel("Lyen")
   INTERNAL,
-  @BootstrapLabel("Manm")
+  @BootstrapLabel("Deroulan")
   DROPDOWN,
   @BootstrapLabel("Fòmilè")
   MODAL_BUTTON,

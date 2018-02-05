@@ -3,11 +3,10 @@ package com.colorofhope.ayitili.model;
 import static com.colorofhope.ayitili.model.BootstrapHtmlDisplay.HTML_IGNORE_DIV;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,41 +15,42 @@ public class ClassField {
 
   private static String HTML_ID =
       "<div class=\"form-group\">\n"
-          + "<input type=\"hidden\" class=\"form-control\" name=\"%1$s\" id=\"%1$s\" disabled/>\n"
+          + "<input type=\"hidden\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\" id=\"%1$s\" disabled/>\n"
           + "</div>";
 
   private static String HTML_STRING =
       "<div class=\"form-group\">\n"
           + "<label class=\"col-form-label\" for=\"%1$s\">%2$s: </label>\n"
-          + "<input type=\"text\" class=\"form-control\" name=\"%1$s\" id=\"%1$s\"/>\n"
+          + "<input type=\"text\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\" id=\"%1$s\"/>\n"
           + "</div>";
 
   private static String HTML_LONG =
       "<div class=\"form-group\">\n"
           + "<label class=\"col-form-label\" for=\"%1$s\">%2$s: </label>\n"
-          + "<input type=\"text\" class=\"form-control\" name=\"%1$s\" id=\"%1$s\"/>\n"
+          + "<input type=\"text\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\" id=\"%1$s\"/>\n"
           + "</div>";
 
   private static String HTML_BOOLEAN =
       "<div class=\"form-check\">\n"
-          + "<label class=\"form-check-label\" th:text=\"%2$s\">\n"
-          + "<input type=\"checkbox\" class=\"form-check-input\" name=\"%1$s\" id=\"%1$s\"/>\n"
+          + "<label class=\"form-check-label\">\n"
+          + "\"%2$s\"\n"
+          + "<input type=\"checkbox\" class=\"form-check-input\" ng-model=\"object.%1$s\" name=\"%1$s\" id=\"%1$s\"/>\n"
           + "</label>\n"
           + "</div>";
 
   private static String HTML_ENUM =
       "<div class=\"form-group\">\n"
           + "<label class=\"col-form-label\" for=\"%1$s\">%2$s: </label>\n"
-          + "<select class=\"form-control\" name=\"%1$s\" id=\"%1$s\">\n"
+          + "<select class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\" id=\"%1$s\">\n"
           + "%3$s"
           + "</select>\n"
           + "</div>";
-  private static String HTML_ENUM_OPTION = "<option th:value=\"%1$s\">%2$s</option>\n";
+  private static String HTML_ENUM_OPTION = "<option value=\"%1$s\">%2$s</option>\n";
 
   private static String HTML_DATE =
       "<div class=\"input-group date\">\n"
           + "<label class=\"col-form-label\" for=\"%1$s\">%2$s</label>\n"
-          + "<input type=\"text\" class=\"form-control\" name=\"%1$s\" id=\"%1$s\"/>\n"
+          + "<input type=\"text\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\" id=\"%1$s\"/>\n"
           + "<div class=\"input-group-addon\">\n"
           + "<span class=\"glyphicon glyphicon-th\"></span>\n"
           + "</div>\n"
@@ -59,7 +59,7 @@ public class ClassField {
   private static String HTML_FILE =
       "<div class=\"form-group\">\n"
           + "<label class=\"col-form-label\" for=\"%1$s\">%2$s: </label>\n"
-          + "<input type=\"file\" class=\"file\" name=\"%1$s\" id=\"%1$s\" data-show-upload=\"false\" data-show-caption=\"true\" data-msg-placeholder=\"Chwazi imaj\"/>\n"
+          + "<input type=\"file\" class=\"file\" ng-model=\"object.%1$s\" name=\"%1$s\" id=\"%1$s\" data-show-upload=\"false\" data-show-caption=\"true\" data-msg-placeholder=\"Chwazi imaj\"/>\n"
           + "</div>";
 
   private static Map<String, String> classToHtmlMap = new HashMap<>();
@@ -78,22 +78,24 @@ public class ClassField {
   public String name;
   public String htmlCode;
 
-  public ClassField(String name, Class type, String bootstrapLabel) {
-    this.name = name;
+  public ClassField(String name, Type type, String bootstrapLabel) {
+    this(name, type instanceof ParameterizedType? ((ParameterizedType) type).getActualTypeArguments()[0]: type, bootstrapLabel, type instanceof ParameterizedType);
+  }
 
+  public ClassField(String name, Type type, String bootstrapLabel, Boolean multiple) {
+    this.name = name;
+    Class classType = (Class) type;
     if (classToHtmlMap.get(name) != null) {
       htmlCode = String.format(classToHtmlMap.get(name), name);
-    } else if (classToHtmlMap.get(type.getName()) == null) {
-      this.htmlCode = null;
-    } else if (type.isEnum()) {
+    } else if (classType.isEnum()) {
       Stream<String> options =
-          Arrays.stream(type.getEnumConstants())
+          Arrays.stream(classType.getEnumConstants())
               .map(
                   enumValue -> {
                     BootstrapLabel bootstrapOptionLabel = null;
                     try {
                       bootstrapOptionLabel =
-                          type.getField(enumValue.toString()).getAnnotation(BootstrapLabel.class);
+                          classType.getField(enumValue.toString()).getAnnotation(BootstrapLabel.class);
                     } catch (NoSuchFieldException e) {
                       e.printStackTrace();
                     }
@@ -103,9 +105,15 @@ public class ClassField {
                         bootstrapOptionLabel == null ? enumValue : bootstrapOptionLabel.value());
                   });
       String optionHtml = String.join("", options.collect(Collectors.toList()));
-      this.htmlCode = String.format(classToHtmlMap.get("Enum"), name, bootstrapLabel, optionHtml);
+      String htmlcode = String.format(classToHtmlMap.get("Enum"), name, bootstrapLabel, optionHtml);
+      if(multiple){
+        htmlcode = htmlcode.replaceAll("<select", "<select multiple");
+      }
+      this.htmlCode = htmlcode;
+    } else if (classToHtmlMap.get(classType.getName()) == null) {
+      this.htmlCode = null;
     } else {
-      this.htmlCode = String.format(classToHtmlMap.get(type.getName()), name, bootstrapLabel);
+      this.htmlCode = String.format(classToHtmlMap.get(classType.getName()), name, bootstrapLabel);
     }
   }
 

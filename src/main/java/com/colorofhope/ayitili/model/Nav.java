@@ -18,16 +18,16 @@ public class Nav extends DBModel {
   @BootstrapLabel("Lyen")
   public String link;
 
-  @BootstrapHtmlDisplay(HTML_IGNORE_DIV)
+  @BootstrapHtmlDisplay(HTML_TEXT_DIV)
   @BootstrapLabel("Kalite")
   public NavType type;
 
-  @BootstrapHtmlDisplay(HTML_IGNORE_DIV)
+  @BootstrapHtmlDisplay(HTML_TEXT_DIV)
   @BootstrapLabel("Aksè")
   public List<AccounteType> accessTypes = new ArrayList<>();
 
 
-  @BootstrapHtmlDisplay(HTML_IGNORE_DIV)
+  @BootstrapHtmlDisplay(HTML_TEXT_DIV)
   @BootstrapLabel("Lis deroulan")
   public List<Nav> dropdown = new ArrayList<>();
 
@@ -79,5 +79,10 @@ public class Nav extends DBModel {
 
   public void setDropdown(List<Nav> dropdown) {
     this.dropdown = dropdown;
+  }
+
+  @Override
+  public String toString() {
+    return text;
   }
 }

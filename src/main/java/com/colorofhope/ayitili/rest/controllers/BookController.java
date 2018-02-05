@@ -5,6 +5,7 @@ import com.colorofhope.ayitili.repository.BookRepository;
 import com.colorofhope.ayitili.repository.DBImageRepository;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.http.HttpStatus;
@@ -22,17 +23,17 @@ public class BookController extends DefaultController<BookRepository, Book> {
   }
 
   @Override
-  public Book create(Book model) throws IOException {
+  public Object create(Book model, String returnPath) throws IOException {
     String imageId = DBImageRepository.addImageTODB(gridFsTemplate, model.formImage);
     model.image = dbImageRepository.findOne(imageId);
-    return super.create(model);
+    return super.create(model, returnPath);
   }
 
   @Override
-  public Book update(@PathVariable String id, Book model) throws IOException {
+  public Object update(@PathVariable String id, Book model, String returnPath) throws IOException {
     String imageId = DBImageRepository.addImageTODB(gridFsTemplate, model.formImage);
     model.image = dbImageRepository.findOne(imageId);
-    return super.update(id, model);
+    return super.update(id, model, returnPath);
   }
 
   @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})

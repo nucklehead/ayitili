@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.annotation.Id;
 
 public abstract class DBModel {
@@ -22,7 +25,7 @@ public abstract class DBModel {
                 field ->
                     new ClassField(
                         field.getName(),
-                        field.getType(),
+                        field.getGenericType(),
                         field.getAnnotation(BootstrapLabel.class) == null
                             ? field.getName()
                             : field.getAnnotation(BootstrapLabel.class).value()));
@@ -59,5 +62,26 @@ public abstract class DBModel {
                         .getAnnotation(BootstrapHtmlDisplay.class)
                         .value()
                         .equals(HTML_IGNORE_DIV));
+  }
+
+  public String toJSON() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    return  mapper.writeValueAsString(this);
+  }
+
+  public void merge(DBModel that){
+    Arrays.stream(this.getClass().getFields()).forEach(field -> {
+      try {
+        if(field.get(that) != null){
+          try {
+            field.set(this, field.get(that));
+          } catch (IllegalAccessException e) {
+            e.printStackTrace();
+          }
+        }
+      } catch (IllegalAccessException e) {
+        e.printStackTrace();
+      }
+    });
   }
 }
