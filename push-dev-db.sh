@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
 
-sudo docker commit -m "Dev database at $(date "+%m-%d-%Y")" ayitili-mongo nucklehead/ayitili-mongo:$(date "+%m-%d-%Y")
-sudo docker push nucklehead/ayitili-mongo
+set -e
+set -x
+
+CUR_DATE=$(date "+%m-%d-%Y-%H.%M.%S")
+
+sudo docker commit -m "Dev database at ${CUR_DATE}" ayitili-mongo nucklehead/ayitili-mongo:${CUR_DATE}
+sudo docker tag nucklehead/ayitili-mongo:${CUR_DATE} nucklehead/ayitili-mongo:latest
+sudo docker push nucklehead/ayitili-mongo:${CUR_DATE}
+sudo docker push nucklehead/ayitili-mongo:latest
