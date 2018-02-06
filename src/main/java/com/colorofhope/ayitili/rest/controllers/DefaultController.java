@@ -3,7 +3,10 @@ package com.colorofhope.ayitili.rest.controllers;
 import com.colorofhope.ayitili.model.DBModel;
 import io.swagger.annotations.Api;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -38,7 +41,9 @@ public abstract class DefaultController<R extends MongoRepository<M, String>, M 
     existingModel.merge(model);
     M newModel = repository.save(existingModel);
     if(returnPath != null && !returnPath.isEmpty()){
-      return new RedirectView(returnPath);
+      Map redirectInfo = new HashMap();
+      redirectInfo.put("redirectPath", returnPath);
+      return redirectInfo;
     }
     return newModel;
   }

@@ -15,33 +15,33 @@ public class ClassField {
 
   private static String HTML_ID =
       "<div class=\"form-group\">\n"
-          + "<input type=\"hidden\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\" id=\"%1$s\" disabled/>\n"
+          + "<input type=\"hidden\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\" disabled/>\n"
           + "</div>";
 
   private static String HTML_STRING =
       "<div class=\"form-group\">\n"
           + "<label class=\"col-form-label\" for=\"%1$s\">%2$s: </label>\n"
-          + "<input type=\"text\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\" id=\"%1$s\"/>\n"
+          + "<input type=\"text\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\"/>\n"
           + "</div>";
 
   private static String HTML_LONG =
       "<div class=\"form-group\">\n"
           + "<label class=\"col-form-label\" for=\"%1$s\">%2$s: </label>\n"
-          + "<input type=\"text\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\" id=\"%1$s\"/>\n"
+          + "<input type=\"text\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\"/>\n"
           + "</div>";
 
   private static String HTML_BOOLEAN =
       "<div class=\"form-check\">\n"
           + "<label class=\"form-check-label\">\n"
           + "\"%2$s\"\n"
-          + "<input type=\"checkbox\" class=\"form-check-input\" ng-model=\"object.%1$s\" name=\"%1$s\" id=\"%1$s\"/>\n"
+          + "<input type=\"checkbox\" class=\"form-check-input\" ng-model=\"object.%1$s\" name=\"%1$s\"/>\n"
           + "</label>\n"
           + "</div>";
 
   private static String HTML_ENUM =
       "<div class=\"form-group\">\n"
           + "<label class=\"col-form-label\" for=\"%1$s\">%2$s: </label>\n"
-          + "<select class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\" id=\"%1$s\">\n"
+          + "<select class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\">\n"
           + "%3$s"
           + "</select>\n"
           + "</div>";
@@ -50,7 +50,7 @@ public class ClassField {
   private static String HTML_DATE =
       "<div class=\"input-group date\">\n"
           + "<label class=\"col-form-label\" for=\"%1$s\">%2$s</label>\n"
-          + "<input type=\"text\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\" id=\"%1$s\"/>\n"
+          + "<input type=\"text\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\"/>\n"
           + "<div class=\"input-group-addon\">\n"
           + "<span class=\"glyphicon glyphicon-th\"></span>\n"
           + "</div>\n"
@@ -59,7 +59,7 @@ public class ClassField {
   private static String HTML_FILE =
       "<div class=\"form-group\">\n"
           + "<label class=\"col-form-label\" for=\"%1$s\">%2$s: </label>\n"
-          + "<input type=\"file\" class=\"file\" ng-model=\"object.%1$s\" name=\"%1$s\" id=\"%1$s\" data-show-upload=\"false\" data-show-caption=\"true\" data-msg-placeholder=\"Chwazi imaj\"/>\n"
+          + "<input type=\"file\" class=\"file\" ng-model=\"object.%1$s\" name=\"%1$s\" data-show-upload=\"false\" data-show-caption=\"true\" data-msg-placeholder=\"Chwazi imaj\"/>\n"
           + "</div>";
 
   private static Map<String, String> classToHtmlMap = new HashMap<>();

@@ -1,4 +1,4 @@
-app.controller('editController', function ($scope, $http) {
+app.controller('editController', function ($scope, $http, $window) {
     // todo map clicked value to FOrm field
     $scope.object = {};
     $scope.formMethod = "post";
@@ -51,11 +51,13 @@ app.controller('editController', function ($scope, $http) {
         }).then(
         function(response) {
             $scope.hideFormModal(formId.replace("-form", ""));
-
+            if(response.data.redirectPath){
+                $window.location.href = response.data.redirectPath;
+            }
         },
         function(data) {
             // Handle error here
-        })
+        });
         $scope.formMethod = "post"
     };
 });
