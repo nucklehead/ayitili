@@ -15,7 +15,7 @@ public class ClassField {
 
   private static String HTML_ID =
       "<div class=\"form-group\">\n"
-          + "<input type=\"hidden\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\" disabled/>\n"
+          + "<input type=\"hidden\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\" aria-label=\"%2$s\" disabled/>\n"
           + "</div>";
 
   private static String HTML_STRING =
@@ -23,6 +23,12 @@ public class ClassField {
           + "<label class=\"col-form-label\" for=\"%1$s\">%2$s: </label>\n"
           + "<input type=\"text\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\"/>\n"
           + "</div>";
+
+  private static String HTML_PASSWORD =
+          "<div class=\"form-group\">\n"
+                  + "<label class=\"col-form-label\" for=\"%1$s\">%2$s: </label>\n"
+                  + "<input type=\"password\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\"/>\n"
+                  + "</div>";
 
   private static String HTML_LONG =
       "<div class=\"form-group\">\n"
@@ -66,6 +72,7 @@ public class ClassField {
 
   static {
     classToHtmlMap.put(String.class.getName(), HTML_STRING);
+    classToHtmlMap.put("password", HTML_PASSWORD);
     classToHtmlMap.put("id", HTML_ID);
     classToHtmlMap.put(Long.class.getName(), HTML_LONG);
     classToHtmlMap.put(Duration.class.getName(), HTML_LONG);
@@ -78,15 +85,20 @@ public class ClassField {
   public String name;
   public String htmlCode;
 
-  public ClassField(String name, Type type, String bootstrapLabel) {
-    this(name, type instanceof ParameterizedType? ((ParameterizedType) type).getActualTypeArguments()[0]: type, bootstrapLabel, type instanceof ParameterizedType);
+  public ClassField(String name, Type type, String bootstrapLabel, Boolean showInform) {
+    this(name, type instanceof ParameterizedType? ((ParameterizedType) type).getActualTypeArguments()[0]: type, bootstrapLabel, type instanceof ParameterizedType, showInform);
   }
 
-  public ClassField(String name, Type type, String bootstrapLabel, Boolean multiple) {
+  public ClassField(String name, Type type, String bootstrapLabel, Boolean multiple, Boolean showInform) {
     this.name = name;
+
     Class classType = (Class) type;
+    if(!showInform){
+      this.htmlCode = null;
+      return;
+    }
     if (classToHtmlMap.get(name) != null) {
-      htmlCode = String.format(classToHtmlMap.get(name), name);
+      htmlCode = String.format(classToHtmlMap.get(name), name, bootstrapLabel);
     } else if (classType.isEnum()) {
       Stream<String> options =
           Arrays.stream(classType.getEnumConstants())

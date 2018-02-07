@@ -18,7 +18,7 @@ public abstract class DBModel {
   @Id
   public String id;
 
-  public List<ClassField> classToBootstrapForm() {
+  public List<ClassField> classToBootstrapForm(Boolean showAllInForm) {
     Stream<ClassField> mapping =
         Arrays.stream(this.getClass().getFields())
             .map(
@@ -28,7 +28,7 @@ public abstract class DBModel {
                         field.getGenericType(),
                         field.getAnnotation(BootstrapLabel.class) == null
                             ? field.getName()
-                            : field.getAnnotation(BootstrapLabel.class).value()));
+                            : field.getAnnotation(BootstrapLabel.class).value(), field.getAnnotation(BootstrapLabel.class) == null || (showAllInForm || field.getAnnotation(BootstrapLabel.class).showInForm())));
     return mapping.collect(Collectors.toList());
   }
 

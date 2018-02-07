@@ -24,7 +24,9 @@ public abstract class DefaultController<R extends MongoRepository<M, String>, M 
   public Object create(M model, String returnPath) throws IOException {
     M newModel = repository.save(model);
     if(returnPath != null && !returnPath.isEmpty()){
-      return new RedirectView(returnPath);
+      Map redirectInfo = new HashMap();
+      redirectInfo.put("redirectPath", returnPath);
+      return redirectInfo;
     }
     return newModel;
   }

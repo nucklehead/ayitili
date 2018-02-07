@@ -68,8 +68,10 @@ public class AppController {
   }
 
   @RequestMapping(method = RequestMethod.POST, path = "/signup")
-  public Object signup(Account account) throws IOException {
-    return accountController.create(account, "/");
+  public String signup(Account account, String returnPath) throws IOException {
+    accountController.create(account, "/");
+
+    return "redirect:" + returnPath;
   }
 
   @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('LIBRARIAN')")

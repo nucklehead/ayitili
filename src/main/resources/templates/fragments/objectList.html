@@ -1,4 +1,4 @@
- <div class="container" th:fragment="objectList" xmlns:th="http://www.thymeleaf.org">
+ <div class="container" th:fragment="objectList" xmlns:th="http://www.thymeleaf.org" >
      <div class="row">
          <div class="col-md" th:each="field: ${object.findBootstrapHtmlDisplayFieldNames()}">
              <strong th:text="${field}"></strong>
@@ -35,6 +35,6 @@
          <button type="button" class="btn btn-primary" th:attr="ng-click='showFormModal(\'' + ${path.substring(1).replaceAll('/', '-')} + '-edit\', \'post\')'" th:text="${addButtonText}"></button>
      </div>
 
-     <div th:replace="fragments/modals/modelEdit :: modelEdit(path=${path}, objects=${objects}, object=${object})"></div>
+     <div th:replace="fragments/modals/modelEdit :: modelEdit(path=${path}, objects=${objects}, object=${object}, showAllinForm=true)"></div>
 
  </div>

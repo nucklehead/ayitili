@@ -1,5 +1,4 @@
 app.controller('formController', function ($scope, $http, $window) {
-
     $scope.submitForm = function(formId, path){
         var formData = new FormData($("#" + formId)[0]);
         formData.append('_method', $scope.formMethod);
@@ -18,6 +17,9 @@ app.controller('formController', function ($scope, $http, $window) {
             $scope.hideFormModal(formId.replace("-form", ""));
             if(response.data.redirectPath){
                 $window.location.href = response.data.redirectPath;
+            }
+            else if(typeof response.data === 'string'  || response.data instanceof String){
+                $window.location.reload();
             }
         },
         function(data) {
