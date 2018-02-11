@@ -6,11 +6,10 @@ app.controller('modalController', function ($scope, $http, $window) {
         $scope.formMethod = method;
         if(object != null){
             $scope.object = object;
-            Object.entries($scope.object).forEach(function (key, value) {
-                if(value.constructor === Array && value[0].constructor === Object){
-                    $scope.object[modalId.replace("api-").replace("-edit") + "Ids"] = value.map(function (object) {
-                        return object.id;
-                    })
+            Object.entries($scope.object).forEach(function (KeyValue) {
+                var value = KeyValue[1];
+                if(value !== null && value.constructor === Array && value[0] !== undefined && value[0].constructor === Object){
+                    $scope.object[modalId.replace("api-", "").replace("-edit", "") + "Ids"] = value;
                 }
             });
         }

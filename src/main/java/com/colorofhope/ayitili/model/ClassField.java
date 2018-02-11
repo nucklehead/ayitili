@@ -72,7 +72,7 @@ public class ClassField {
           "<div class=\"form-group\">\n"
                   + "<label class=\"col-form-label\" for=\"%1$s-ids\">%2$s: </label>\n"
                   + "<select multiple class=\"form-control\" name=\"%1$sIds\"\n" +
-                  "          ng-model=\"object.%1$s\"\n" +
+                  "          ng-model=\"object.%1$sIds\"\n" +
                   "          ng-options=\"object.text for object in %1$sIds track by object.id\">\n"
                   + "</select>\n"
                   + "</div>";
