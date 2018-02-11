@@ -23,7 +23,7 @@ public class PageController extends DefaultController<PageRepository, Page> {
 
   @RequestMapping(method = RequestMethod.PUT, path = "/{name}/component")
   public Page insertComponent(@PathVariable String name, Integer rowIdex, Integer columnIndex, String component){
-    Page page = repository.findName(name);
+    Page page = repository.findByName(name);
     if(page.bodyRows.size() < rowIdex){
       page.getBodyRows().add(Arrays.asList(component));
     }
