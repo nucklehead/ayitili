@@ -1,12 +1,10 @@
 package com.colorofhope.ayitili.web;
 
-import com.colorofhope.ayitili.model.AccounteType;
+import com.colorofhope.ayitili.model.AccountType;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.colorofhope.ayitili.model.Nav;
 import com.colorofhope.ayitili.model.NavType;
@@ -27,9 +25,24 @@ public class ModelAttributeControllerAdvice {
 //    Map<String, String> links1 = navlinks(user);
 //    links1.putAll(navButtons(null));
 //    links1.putAll(navForms(user));
-//    List<Nav> myNavs = links1.entrySet().stream().map(nav -> new Nav(nav.getKey(), nav.getValue(), NavType.INTERNAL, Arrays.asList(AccounteType.GUEST_MEMBER), Arrays.asList())).collect(Collectors.toList());
+//    List<Nav> myNavs = links1.entrySet().stream().map(nav -> new Nav(nav.getKey(), nav.getValue(), NavType.INTERNAL, Arrays.asList(AccountType.GUEST_MEMBER), Arrays.asList())).collect(Collectors.toList());
 //    navRepository.save(myNavs);
     return "tesy";
+  }
+
+  @ModelAttribute("accessibleNavs")
+  public List accessibleNavs(Authentication user) {
+    List<Nav> allNavs = navRepository.findAll();
+    allNavs.sort(Comparator.comparing(Nav::getType).thenComparing(Nav::getText));
+    List<AccountType> userAccess = new ArrayList<>();
+    if(user != null){
+      userAccess.addAll(user.getAuthorities().stream().map(authority -> AccountType.valueOf(authority.getAuthority())).collect(Collectors.toList()));
+    }
+    else {
+      userAccess.add(AccountType.GUEST_MEMBER);
+    }
+    List<Nav> accessibleNavs = allNavs.stream().filter(nav -> nav.accessTypes.containsAll(userAccess)).collect(Collectors.toList());
+    return accessibleNavs;
   }
 
   @ModelAttribute("navLinks")
@@ -38,7 +51,7 @@ public class ModelAttributeControllerAdvice {
     navLinks.put("Akèy", "/");
     navLinks.put("Liv", "/showBooks");
     if (user != null) {
-      if (user.getAuthorities().contains(new SimpleGrantedAuthority(AccounteType.ADMIN.name()))) {
+      if (user.getAuthorities().contains(new SimpleGrantedAuthority(AccountType.ADMIN.name()))) {
         navLinks.put("Ajoute manm", "/ajouteManm");
         navLinks.put("Montre Banyè yo", "/showBanners");
       }

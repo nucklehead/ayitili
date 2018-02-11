@@ -1,4 +1,4 @@
- <div class="container" th:fragment="objectList" xmlns:th="http://www.thymeleaf.org" >
+ <div class="container" data-spy="scroll" th:fragment="objectList" xmlns:th="http://www.thymeleaf.org" >
      <div class="row">
          <div class="col-md" th:each="field: ${object.findBootstrapHtmlDisplayFieldNames()}">
              <strong th:text="${field}"></strong>

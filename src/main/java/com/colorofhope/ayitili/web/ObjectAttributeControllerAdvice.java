@@ -3,10 +3,13 @@ package com.colorofhope.ayitili.web;
 import com.colorofhope.ayitili.model.*;
 import com.colorofhope.ayitili.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ObjectAttributeControllerAdvice {

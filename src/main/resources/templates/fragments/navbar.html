@@ -9,15 +9,33 @@
        </button>
        <div class="collapse navbar-collapse" id="navbarResponsive">
          <ul class="navbar-nav ml-auto">
-           <li class="nav-item" th:each="navLinkKV : ${navLinks}">
-             <a class="nav-link" th:href="${navLinkKV.value}" th:text="${navLinkKV.key}"></a>
-           </li>
-           <li class="nav-item" th:each="navButtonKV : ${navButtons}">
-             <button class="btn btn-info" type="button" data-toggle="modal" th:attr="data-target=${navButtonKV.value}" th:text="${navButtonKV.key}"></button>
-           </li>
-           <form class="form-inline" th:action="${navFormKV.value}" th:each="navFormKV : ${navForms}">
-             <button class="btn btn-info" type="submit" th:text="${navFormKV.key}"></button>
-           </form>
+           <th:block th:each="nav : ${accessibleNavs}" th:switch="${nav.type}">
+             <li class="nav-item" th:case="${T(com.colorofhope.ayitili.model.NavType).LINK}">
+               <a class="nav-link" th:href="${nav.link}" th:text="${nav.text}"></a>
+             </li>
+             <li class="nav-item dropdown" th:case="${T(com.colorofhope.ayitili.model.NavType).DROPDOWN}">
+               <a class="nav-link dropdown-toggle" data-toggle="dropdown" th:text="${nav.text}"></a>
+               <div class="dropdown-menu">
+                 <a class="dropdown-item" th:each="subnav : ${nav.dropdown}" th:href="${subnav.link}" th:text="${subnav.text}"></a>
+               </div>
+             </li>
+             <li class="nav-item" th:case="${T(com.colorofhope.ayitili.model.NavType).MODAL_BUTTON}">>
+               <button class="btn btn-info" type="button" data-toggle="modal" th:attr="data-target=${nav.link}" th:text="${nav.text}"></button>
+             </li>
+             <form class="form-inline" th:action="${nav.link}" th:case="${T(com.colorofhope.ayitili.model.NavType).FORM_BUTTON}">
+               <button class="btn btn-info" type="submit" th:text="${nav.text}"></button>
+             </form>
+           </th:block>
+
+           <!--<li class="nav-item" th:each="navLinkKV : ${navLinks}">-->
+             <!--<a class="nav-link" th:href="${navLinkKV.value}" th:text="${navLinkKV.key}"></a>-->
+           <!--</li>-->
+           <!--<li class="nav-item" th:each="navButtonKV : ${navButtons}">-->
+             <!--<button class="btn btn-info" type="button" data-toggle="modal" th:attr="data-target=${navButtonKV.value}" th:text="${navButtonKV.key}"></button>-->
+           <!--</li>-->
+           <!--<form class="form-inline" th:action="${navFormKV.value}" th:each="navFormKV : ${navForms}">-->
+             <!--<button class="btn btn-info" type="submit" th:text="${navFormKV.key}"></button>-->
+           <!--</form>-->
          </ul>
        </div>
        <button th:if="${editMode}" type="button" class="btn btn-danger btn-circle" style="margin-left: 20px" ng-click="showModal('api-nav')">
@@ -26,7 +44,7 @@
      </div>
    </nav>
 
-   <div th:replace="fragments/modals/objectListModal :: objectListModal(path='/api/nav', objects=${navs}, object=${nav})"></div>
+   <div th:replace="fragments/modals/objectListModal :: objectListModal(path='/api/nav', objects=${navs}, object=${nav}, editMode=${editMode})"></div>
 
  </div>
 

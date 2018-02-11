@@ -23,6 +23,8 @@
       </a>
     </div>
   </header>
-
-
+  <button th:if="${editMode}" type="button" class="btn btn-danger btn-circle" ng-click="showModal('api-banner')">
+    <span class="fa fa-edit fa-lg"></span>
+  </button>
+  <div th:replace="fragments/modals/objectListModal :: objectListModal(path='/api/banner', objects=${banners}, object=${banner}, editMode=${editMode})"></div>
 </div>

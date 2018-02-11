@@ -1,8 +1,6 @@
 package com.colorofhope.ayitili.model;
 
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +22,19 @@ public class Nav extends DBModel {
 
   @BootstrapHtmlDisplay(HTML_TEXT_DIV)
   @BootstrapLabel("Aksè")
-  public List<AccounteType> accessTypes = new ArrayList<>();
+  public List<AccountType> accessTypes = new ArrayList<>();
 
 
   @BootstrapHtmlDisplay(HTML_TEXT_DIV)
   @BootstrapLabel("Lis deroulan")
   public List<Nav> dropdown = new ArrayList<>();
 
+  @Transient
+  public List<String> navIds = new ArrayList<>();
+
   public Nav() {}
 
-  public Nav(String text, String link, NavType type, List<AccounteType> accessTypes, List<Nav> dropdown) {
+  public Nav(String text, String link, NavType type, List<AccountType> accessTypes, List<Nav> dropdown) {
     this.text = text;
     this.link = link;
     this.type = type;
@@ -65,11 +66,11 @@ public class Nav extends DBModel {
     this.type = type;
   }
 
-  public List<AccounteType> getAccessTypes() {
+  public List<AccountType> getAccessTypes() {
     return accessTypes;
   }
 
-  public void setAccessTypes(List<AccounteType> accessTypes) {
+  public void setAccessTypes(List<AccountType> accessTypes) {
     this.accessTypes = accessTypes;
   }
 
@@ -79,6 +80,14 @@ public class Nav extends DBModel {
 
   public void setDropdown(List<Nav> dropdown) {
     this.dropdown = dropdown;
+  }
+
+  public List<String> getNavIds() {
+    return null;
+  }
+
+  public void setNavIds(List<String> navIds) {
+    this.navIds = navIds;
   }
 
   @Override

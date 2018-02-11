@@ -23,7 +23,7 @@ public class Account extends DBModel {
   public String lastName;
 
   @BootstrapLabel(value = "Kalite kont lan", showInForm = false)
-  public AccounteType type = AccounteType.MEMBER;
+  public AccountType type = AccountType.MEMBER;
 
   @BootstrapLabel(value = "Pwen", showInForm = false)
   public Long points = 0L;
@@ -37,7 +37,7 @@ public class Account extends DBModel {
       String phone,
       String firstName,
       String lastName,
-      AccounteType type,
+      AccountType type,
       Long points) {
     this.username = username;
     this.password = password;
@@ -97,11 +97,11 @@ public class Account extends DBModel {
     this.lastName = lastName;
   }
 
-  public AccounteType getType() {
+  public AccountType getType() {
     return type;
   }
 
-  public void setType(AccounteType type) {
+  public void setType(AccountType type) {
     this.type = type;
   }
 

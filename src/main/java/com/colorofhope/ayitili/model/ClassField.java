@@ -68,6 +68,15 @@ public class ClassField {
           + "<input type=\"file\" class=\"file\" ng-model=\"object.%1$s\" name=\"%1$s\" data-show-upload=\"false\" data-show-caption=\"true\" data-msg-placeholder=\"Chwazi imaj\"/>\n"
           + "</div>";
 
+  private static String HTML_LIST =
+          "<div class=\"form-group\">\n"
+                  + "<label class=\"col-form-label\" for=\"%1$s-ids\">%2$s: </label>\n"
+                  + "<select multiple class=\"form-control\" name=\"%1$sIds\"\n" +
+                  "          ng-model=\"object.%1$s\"\n" +
+                  "          ng-options=\"object.text for object in %1$sIds track by object.id\">\n"
+                  + "</select>\n"
+                  + "</div>";
+
   private static Map<String, String> classToHtmlMap = new HashMap<>();
 
   static {
@@ -80,6 +89,7 @@ public class ClassField {
     classToHtmlMap.put("Enum", HTML_ENUM);
     classToHtmlMap.put(Date.class.getName(), HTML_DATE);
     classToHtmlMap.put(MultipartFile.class.getName(), HTML_FILE);
+    classToHtmlMap.put("Multiple", HTML_LIST);
   }
 
   public String name;
@@ -122,7 +132,9 @@ public class ClassField {
         htmlcode = htmlcode.replaceAll("<select", "<select multiple");
       }
       this.htmlCode = htmlcode;
-    } else if (classToHtmlMap.get(classType.getName()) == null) {
+    } else if (classToHtmlMap.get(classType.getName()) == null && multiple) {
+      this.htmlCode = String.format(classToHtmlMap.get("Multiple"), classType.getSimpleName().toLowerCase(), bootstrapLabel);
+    } else if (classToHtmlMap.get(classType.getName()) == null || multiple) {
       this.htmlCode = null;
     } else {
       this.htmlCode = String.format(classToHtmlMap.get(classType.getName()), name, bootstrapLabel);
