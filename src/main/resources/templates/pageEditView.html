@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/headImports :: head"></head>
+
+<body ng-app="ayitili-app">
+<nav th:replace="fragments/navbar :: nav"></nav>
+
+<!-- Page Content -->
+<div class="container" style="margin-top: 50px" ng-controller="pageEditController" th:attr="ng-init=${currentPage}?'pageId=\'' + ${currentPage.id} + '\''">
+    <div class="row justify-content-md-center">
+        <form class="" ng-submit="savePage()">
+            <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert" hidden="">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>Sa byen pase!</strong> Ou anrejistre non paj la.
+            </div>
+            <div id="error-alert" class="alert alert-danger alert-dismissible fade show" role="alert" hidden="">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>Oh oh! Bagay yo myèl!</strong> {{ error }}.
+            </div>
+            <div class="form-group">
+                <label>Non paj la</label>
+                <input type="text" class="form-control form-control-lg rounded-0" name="name" required="true" ng-model="currentPage.name"/>
+            </div>
+            <div class="form-group">
+                <label>Lyen paj la</label>
+                <input type="text" class="form-control form-control-lg rounded-0" name="formatedName" required="true" disabled="" value="/page/{{ currentPage.name | lowercase | spaceToDash }}"/>
+            </div>
+            <button class="btn btn-info" type="submit">Anrejistre</button>
+        </form>
+    </div>
+    <div ng-repeat="row in currentPage.bodyRows track by $index" class="row" style="margin: 50px">
+        <div class="col">
+            <div class="row">
+                <div class="col" ng-repeat="col in row track by $index">
+                    <div class="row" >
+                        <div class="col">
+                            <div id="{{ $parent.$index + '-' + $index }}" ng-bind-html="col"></div>
+                        </div>
+                        <div class="col-2">
+                            <div class="btn-group-vertical" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-primary btn-circle" ng-if="!inEditMode($parent.$index + '-' + $index)" ng-click="editComponent($parent.$parent.$index + '-' + $index)">
+                                    <span class="fa fa-edit fa-lg"></span>
+                                </button>
+                                <button type="button" class="btn btn-success btn-circle" ng-if="inEditMode($parent.$index + '-' + $index)" ng-click="saveComponent($parent.$parent.$index + '-' + $index)">
+                                    <span class="fa fa-save fa-lg"></span>
+                                </button>
+                                <button type="button" class="btn btn-info btn-circle" ng-if="inEditMode($parent.$index + '-' + $index)" ng-click="cancelEditComponent($parent.$parent.$index + '-' + $index)">
+                                    <span class="fa fa-times-circle fa-lg"></span>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-circle" ng-click="deleteComponent($parent.$index, $index)">
+                                    <span class="fa fa-trash fa-lg"></span>
+                                </button>
+                                <button type="button" class="btn btn-success btn-circle" ng-if="!inEditMode($parent.$index + '-' + $index)" ng-click="addColumn($parent.$parent.$index, $index)">
+                                    <span class="fa fa-plus-square fa-lg"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <button type="button" class="btn btn-primary btn-circle" ng-click="addRow($index)">
+                    <span class="fa fa-plus-square fa-lg"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container -->
+
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

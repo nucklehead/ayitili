@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="fragments/headImports :: head"></head>
+
+    <body>
+        <nav th:replace="fragments/navbar :: nav"></nav>   
+        
+        <!-- Page Content -->
+        <div class="container" style="margin-top: 50px">
+
+          <div th:each="row : ${currentPage.bodyRows}" class="row">
+              <div th:each="col : ${row}" class="col" th:utext="${col}"></div>
+          </div>
+
+        </div>
+        <!-- /.container -->
+    
+        <footer th:replace="fragments/footer :: footer"></footer>   
+    </body>
+</html>

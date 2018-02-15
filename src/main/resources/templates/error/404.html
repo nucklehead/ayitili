@@ -1,0 +1,43 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>404: Page Not Found</title>
+
+    <link href="/webjars/bootstrap/4.0.0-beta-1/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/webjars/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+    <link href="/css/modern-business.css" rel="stylesheet"/>
+
+    <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/webjars/popper.js/1.12.5/dist/umd/popper.min.js"></script>
+    <script src="/webjars/bootstrap/4.0.0-beta-1/js/bootstrap.min.js"></script>
+    <style>
+        body { background-image: url(https://image.flaticon.com/icons/png/512/264/264758.png); background-repeat: no-repeat; background-size: auto;color: white;text-shadow: 0px 0px 10px black;}
+        .error-template {padding: 40px 15px;text-align: center;}
+        .error-actions {margin-top:15px;margin-bottom:15px;}
+        .error-actions .btn { margin-right:10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row vertical-center">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1>Wouch!!!</h1>
+                <h2>Paj sa pa egziste!</h2>
+                <div class="error-details">Ou genlè pèdi nan yon liv!</div>
+                <p th:text="${error}">Enfo</p>
+                <div class="error-actions">
+                    <a href="/" class="btn btn-primary btn-lg">
+                        <span class="fa fa-home fa-lg"></span>Tounen nan Akèy
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

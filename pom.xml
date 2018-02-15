@@ -88,6 +88,11 @@
       <artifactId>angular-sanitize</artifactId>
       <version>1.6.8</version>
     </dependency>
+    <dependency>
+      <groupId>org.webjars.npm</groupId>
+      <artifactId>html2canvas</artifactId>
+      <version>1.0.0-alpha.9</version>
+    </dependency>
     <!-- swagger-jersey2 version must use the same swagger-core as springfox-swagger -->
     <dependency>
       <groupId>io.swagger</groupId>

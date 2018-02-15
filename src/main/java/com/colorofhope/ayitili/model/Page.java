@@ -19,6 +19,11 @@ public class Page extends DBModel {
   public String name;
 
   @BootstrapHtmlDisplay(HTML_TEXT_DIV)
+  @BootstrapLabel("Non lyen")
+  @Indexed
+  public String formatedName;
+
+  @BootstrapHtmlDisplay(HTML_TEXT_DIV)
   @BootstrapLabel("Aktiv")
   public Boolean active;
 
@@ -29,8 +34,9 @@ public class Page extends DBModel {
 
   public Page() {}
 
-  public Page(String name, Boolean active, List<List<String>> bodyRows) {
+  public Page(String name, String formatedName, Boolean active, List<List<String>> bodyRows) {
     this.name = name;
+    this.formatedName = formatedName;
     this.active = active;
     this.bodyRows = bodyRows;
   }
@@ -57,5 +63,13 @@ public class Page extends DBModel {
 
   public void setBodyRows(List<List<String>> bodyRows) {
     this.bodyRows = bodyRows;
+  }
+
+  public String getFormatedName() {
+    return formatedName;
+  }
+
+  public void setFormatedName(String formatedName) {
+    this.formatedName = formatedName;
   }
 }

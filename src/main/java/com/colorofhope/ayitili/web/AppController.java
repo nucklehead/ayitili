@@ -3,8 +3,10 @@ package com.colorofhope.ayitili.web;
 import com.colorofhope.ayitili.model.Account;
 import com.colorofhope.ayitili.model.Banner;
 import com.colorofhope.ayitili.model.Book;
+import com.colorofhope.ayitili.model.Page;
 import com.colorofhope.ayitili.repository.BannerRepository;
 import com.colorofhope.ayitili.repository.BookRepository;
+import com.colorofhope.ayitili.repository.PageRepository;
 import com.colorofhope.ayitili.rest.controllers.AccountController;
 import com.colorofhope.ayitili.rest.controllers.OptionController;
 import com.colorofhope.ayitili.rest.controllers.VideoController;
@@ -33,8 +35,10 @@ public class AppController {
   @Autowired BookRepository bookRepository;
 
   @Autowired
-  AccountController accountController;
+  PageRepository pageRepository;
 
+  @Autowired
+  AccountController accountController;
 
   @RequestMapping(method = RequestMethod.GET, path = "/")
   public String index(Model model) {
@@ -106,5 +110,34 @@ public class AppController {
     String pageUrl = requestURL.replaceAll("/edit","");
     model.addAttribute("editMode", true);
     return "forward:" + pageUrl ;
+  }
+
+  @RequestMapping(method = RequestMethod.GET, path = "/page/{name}")
+  public String renderDbPage(Model model, String name) {
+    Page page = pageRepository.findByFormatedName(name);
+    if(page.active){
+      model.addAttribute("currentPage", page);
+      model.addAttribute("title", page.name);
+      return "pageView" ;
+
+    }
+//    TODO you know
+    return "404";
+  }
+
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @RequestMapping(method = RequestMethod.GET, path = "/page/{name}/edit")
+  public String editDBPage(Model model, String name) {
+    Page page = pageRepository.findByFormatedName(name);
+    model.addAttribute("pageId", page.id);
+    model.addAttribute("title", page.name + " - change");
+    return "pageEditView";
+  }
+
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @RequestMapping(method = RequestMethod.GET, path = "/page/create")
+  public String renderDbPage(Model model) {
+    model.addAttribute("title", "Kreye paj");
+    return "pageEditView" ;
   }
 }

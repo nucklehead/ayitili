@@ -6,4 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface PageRepository extends MongoRepository<Page, String> {
     Page findByName(String name);
 
+    Page findByFormatedName(String formatedName);
+
 }
