@@ -2,14 +2,13 @@ package com.colorofhope.ayitili.model;
 
 import static com.colorofhope.ayitili.model.BootstrapHtmlDisplay.HTML_IGNORE_DIV;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.annotation.Id;
 
 public abstract class DBModel {
@@ -28,7 +27,10 @@ public abstract class DBModel {
                         field.getGenericType(),
                         field.getAnnotation(BootstrapLabel.class) == null
                             ? field.getName()
-                            : field.getAnnotation(BootstrapLabel.class).value(), field.getAnnotation(BootstrapLabel.class) == null || (showAllInForm || field.getAnnotation(BootstrapLabel.class).showInForm())));
+                            : field.getAnnotation(BootstrapLabel.class).value(),
+                        field.getAnnotation(BootstrapLabel.class) == null
+                            || (showAllInForm
+                                || field.getAnnotation(BootstrapLabel.class).showInForm())));
     return mapping.collect(Collectors.toList());
   }
 
@@ -66,22 +68,24 @@ public abstract class DBModel {
 
   public String toJSON() throws JsonProcessingException {
     ObjectMapper mapper = new ObjectMapper();
-    return  mapper.writeValueAsString(this);
+    return mapper.writeValueAsString(this);
   }
 
-  public void merge(DBModel that){
-    Arrays.stream(this.getClass().getFields()).forEach(field -> {
-      try {
-        if(field.get(that) != null){
-          try {
-            field.set(this, field.get(that));
-          } catch (IllegalAccessException e) {
-            e.printStackTrace();
-          }
-        }
-      } catch (IllegalAccessException e) {
-        e.printStackTrace();
-      }
-    });
+  public void merge(DBModel that) {
+    Arrays.stream(this.getClass().getFields())
+        .forEach(
+            field -> {
+              try {
+                if (field.get(that) != null) {
+                  try {
+                    field.set(this, field.get(that));
+                  } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                  }
+                }
+              } catch (IllegalAccessException e) {
+                e.printStackTrace();
+              }
+            });
   }
 }

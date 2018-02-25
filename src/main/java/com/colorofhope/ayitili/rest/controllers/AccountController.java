@@ -3,7 +3,6 @@ package com.colorofhope.ayitili.rest.controllers;
 import com.colorofhope.ayitili.model.Account;
 import com.colorofhope.ayitili.repository.AccountRepository;
 import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;

@@ -2,10 +2,8 @@ package com.colorofhope.ayitili.rest.controllers;
 
 import com.colorofhope.ayitili.model.Video;
 import com.colorofhope.ayitili.repository.VideoRepository;
-import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
-import com.restfb.Parameter;
 import com.restfb.Version;
 import com.restfb.types.VideoList;
 import java.util.List;
@@ -25,10 +23,10 @@ public class VideoController extends DefaultController<VideoRepository, Video> {
   @RequestMapping(method = RequestMethod.GET, path = "/facebook")
   public List<VideoList> getFacebookVideos() {
     FacebookClient facebookClient = new DefaultFacebookClient(facebookToken, Version.VERSION_2_9);
-//    Connection<VideoList> fbVideos =
-//        facebookClient.fetchConnection(
-//            "Aigleinfo/videos", VideoList.class, Parameter.with("limit", 100));
-//    return fbVideos.getData();
+    //    Connection<VideoList> fbVideos =
+    //        facebookClient.fetchConnection(
+    //            "Aigleinfo/videos", VideoList.class, Parameter.with("limit", 100));
+    //    return fbVideos.getData();
     return null;
   }
 }

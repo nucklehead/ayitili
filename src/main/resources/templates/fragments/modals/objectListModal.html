@@ -1,6 +1,6 @@
-<div th:if="${editMode}"  class="modal fade" th:attr="id=${path.substring(1).replaceAll('/', '-')}" tabindex="-1" role="dialog" th:fragment="objectListModal" xmlns:th="http://www.thymeleaf.org">
+<div th:if="${editMode}"  class="modal fade modal-fullscreen" th:attr="id=${path.substring(1).replaceAll('/', '-')}" tabindex="-1" role="dialog" th:fragment="objectListModal" xmlns:th="http://www.thymeleaf.org">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" style="width: 80vw; margin-left: -200px">
+        <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" th:text="${changeButtonText}"></h5>
                 <button type="button" class="close" th:attr="ng-click='hideModal(\'' + ${path.substring(1).replaceAll('/', '-')} + '\')'" aria-label="Close">

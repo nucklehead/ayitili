@@ -1,14 +1,10 @@
 package com.colorofhope.ayitili.web;
 
 import com.colorofhope.ayitili.model.AccountType;
-
+import com.colorofhope.ayitili.model.Nav;
+import com.colorofhope.ayitili.repository.NavRepository;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import com.colorofhope.ayitili.model.Nav;
-import com.colorofhope.ayitili.model.NavType;
-import com.colorofhope.ayitili.repository.NavRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,16 +13,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice
 public class ModelAttributeControllerAdvice {
-  @Autowired
-  NavRepository navRepository;
+  @Autowired NavRepository navRepository;
 
   @ModelAttribute("iniere")
-  public String test(Authentication user){
-//    Map<String, String> links1 = navlinks(user);
-//    links1.putAll(navButtons(null));
-//    links1.putAll(navForms(user));
-//    List<Nav> myNavs = links1.entrySet().stream().map(nav -> new Nav(nav.getKey(), nav.getValue(), NavType.INTERNAL, Arrays.asList(AccountType.GUEST_MEMBER), Arrays.asList())).collect(Collectors.toList());
-//    navRepository.save(myNavs);
+  public String test(Authentication user) {
+    //    Map<String, String> links1 = navlinks(user);
+    //    links1.putAll(navButtons(null));
+    //    links1.putAll(navForms(user));
+    //    List<Nav> myNavs = links1.entrySet().stream().map(nav -> new Nav(nav.getKey(),
+    // nav.getValue(), NavType.INTERNAL, Arrays.asList(AccountType.GUEST_MEMBER),
+    // Arrays.asList())).collect(Collectors.toList());
+    //    navRepository.save(myNavs);
     return "tesy";
   }
 
@@ -35,13 +32,20 @@ public class ModelAttributeControllerAdvice {
     List<Nav> allNavs = navRepository.findAll();
     allNavs.sort(Comparator.comparing(Nav::getType).thenComparing(Nav::getText));
     List<AccountType> userAccess = new ArrayList<>();
-    if(user != null){
-      userAccess.addAll(user.getAuthorities().stream().map(authority -> AccountType.valueOf(authority.getAuthority())).collect(Collectors.toList()));
-    }
-    else {
+    if (user != null) {
+      userAccess.addAll(
+          user.getAuthorities()
+              .stream()
+              .map(authority -> AccountType.valueOf(authority.getAuthority()))
+              .collect(Collectors.toList()));
+    } else {
       userAccess.add(AccountType.GUEST_MEMBER);
     }
-    List<Nav> accessibleNavs = allNavs.stream().filter(nav -> nav.accessTypes.containsAll(userAccess)).collect(Collectors.toList());
+    List<Nav> accessibleNavs =
+        allNavs
+            .stream()
+            .filter(nav -> nav.accessTypes.containsAll(userAccess))
+            .collect(Collectors.toList());
     return accessibleNavs;
   }
 

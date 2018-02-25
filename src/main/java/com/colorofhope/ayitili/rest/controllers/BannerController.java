@@ -5,7 +5,6 @@ import com.colorofhope.ayitili.repository.BannerRepository;
 import com.colorofhope.ayitili.repository.DBImageRepository;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.http.HttpStatus;
@@ -34,10 +33,18 @@ public class BannerController extends DefaultController<BannerRepository, Banner
   }
 
   @Override
-  public Object update(@PathVariable String id, Banner model, String returnPath) throws IOException {
+  public Object update(@PathVariable String id, Banner model, String returnPath)
+      throws IOException {
     String imageId = DBImageRepository.addImageTODB(gridFsTemplate, model.formImage);
     model.image = dbImageRepository.findOne(imageId);
+    dbImageRepository.delete(repository.findOne(id).image.id);
     return super.update(id, model, returnPath);
+  }
+
+  @Override
+  public void delete(@PathVariable String id){
+    dbImageRepository.delete(repository.findOne(id).image.id);
+    super.delete(id);
   }
 
   @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})

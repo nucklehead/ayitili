@@ -4,12 +4,8 @@ import com.colorofhope.ayitili.model.DBModel;
 import io.swagger.annotations.Api;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 @Api
 public abstract class DefaultController<R extends MongoRepository<M, String>, M extends DBModel> {
@@ -23,7 +19,7 @@ public abstract class DefaultController<R extends MongoRepository<M, String>, M 
   @RequestMapping(method = RequestMethod.POST, path = "")
   public Object create(M model, String returnPath) throws IOException {
     M newModel = repository.save(model);
-    if(returnPath != null && !returnPath.isEmpty()){
+    if (returnPath != null && !returnPath.isEmpty()) {
       Map redirectInfo = new HashMap();
       redirectInfo.put("redirectPath", returnPath);
       return redirectInfo;
@@ -42,7 +38,7 @@ public abstract class DefaultController<R extends MongoRepository<M, String>, M 
     M existingModel = repository.findOne(id);
     existingModel.merge(model);
     M newModel = repository.save(existingModel);
-    if(returnPath != null && !returnPath.isEmpty()){
+    if (returnPath != null && !returnPath.isEmpty()) {
       Map redirectInfo = new HashMap();
       redirectInfo.put("redirectPath", returnPath);
       return redirectInfo;

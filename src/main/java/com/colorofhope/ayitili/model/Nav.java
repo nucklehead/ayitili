@@ -1,11 +1,10 @@
 package com.colorofhope.ayitili.model;
 
-import org.springframework.data.annotation.Transient;
+import static com.colorofhope.ayitili.model.BootstrapHtmlDisplay.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.colorofhope.ayitili.model.BootstrapHtmlDisplay.*;
+import org.springframework.data.annotation.Transient;
 
 public class Nav extends DBModel {
   @BootstrapHtmlDisplay(HTML_TEXT_DIV)
@@ -24,17 +23,16 @@ public class Nav extends DBModel {
   @BootstrapLabel("Aksè")
   public List<AccountType> accessTypes = new ArrayList<>();
 
-
   @BootstrapHtmlDisplay(HTML_TEXT_DIV)
   @BootstrapLabel("Lis deroulan")
   public List<Nav> dropdown = new ArrayList<>();
 
-  @Transient
-  public List<String> navIds = new ArrayList<>();
+  @Transient public List<String> navIds = new ArrayList<>();
 
   public Nav() {}
 
-  public Nav(String text, String link, NavType type, List<AccountType> accessTypes, List<Nav> dropdown) {
+  public Nav(
+      String text, String link, NavType type, List<AccountType> accessTypes, List<Nav> dropdown) {
     this.text = text;
     this.link = link;
     this.type = type;

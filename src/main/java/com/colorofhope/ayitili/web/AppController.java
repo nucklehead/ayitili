@@ -12,15 +12,15 @@ import com.colorofhope.ayitili.rest.controllers.OptionController;
 import com.colorofhope.ayitili.rest.controllers.VideoController;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 @Controller
 @Api
@@ -34,11 +34,9 @@ public class AppController {
 
   @Autowired BookRepository bookRepository;
 
-  @Autowired
-  PageRepository pageRepository;
+  @Autowired PageRepository pageRepository;
 
-  @Autowired
-  AccountController accountController;
+  @Autowired AccountController accountController;
 
   @RequestMapping(method = RequestMethod.GET, path = "/")
   public String index(Model model) {
@@ -107,37 +105,39 @@ public class AppController {
   @RequestMapping(method = RequestMethod.GET, path = "**/edit")
   public String editCurrentPage(Model model, HttpServletRequest request) {
     String requestURL = request.getRequestURI();
-    String pageUrl = requestURL.replaceAll("/edit","");
+    String pageUrl = requestURL.replaceAll("/edit", "");
     model.addAttribute("editMode", true);
-    return "forward:" + pageUrl ;
+    return "forward:" + pageUrl;
   }
 
   @RequestMapping(method = RequestMethod.GET, path = "/page/{name}")
   public String renderDbPage(Model model, String name) {
     Page page = pageRepository.findByFormatedName(name);
-    if(page.active){
+    if (page.active) {
       model.addAttribute("currentPage", page);
       model.addAttribute("title", page.name);
-      return "pageView" ;
-
+      return "pageView";
     }
-//    TODO you know
-    return "404";
+    //    TODO you know
+    return "error/404";
   }
 
   @PreAuthorize("hasAuthority('ADMIN')")
   @RequestMapping(method = RequestMethod.GET, path = "/page/{name}/edit")
-  public String editDBPage(Model model, String name) {
+  public String editDBPage(Model model, @PathVariable String name) {
     Page page = pageRepository.findByFormatedName(name);
-    model.addAttribute("pageId", page.id);
-    model.addAttribute("title", page.name + " - change");
-    return "pageEditView";
+    if (page != null) {
+      model.addAttribute("currentPage", page);
+      model.addAttribute("title", page.name + " - change");
+      return "pageEditView";
+    }
+    return "error/404";
   }
 
   @PreAuthorize("hasAuthority('ADMIN')")
   @RequestMapping(method = RequestMethod.GET, path = "/page/create")
   public String renderDbPage(Model model) {
     model.addAttribute("title", "Kreye paj");
-    return "pageEditView" ;
+    return "pageEditView";
   }
 }

@@ -25,10 +25,10 @@ public class ClassField {
           + "</div>";
 
   private static String HTML_PASSWORD =
-          "<div class=\"form-group\">\n"
-                  + "<label class=\"col-form-label\" for=\"%1$s\">%2$s: </label>\n"
-                  + "<input type=\"password\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\"/>\n"
-                  + "</div>";
+      "<div class=\"form-group\">\n"
+          + "<label class=\"col-form-label\" for=\"%1$s\">%2$s: </label>\n"
+          + "<input type=\"password\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\"/>\n"
+          + "</div>";
 
   private static String HTML_LONG =
       "<div class=\"form-group\">\n"
@@ -69,13 +69,13 @@ public class ClassField {
           + "</div>";
 
   private static String HTML_LIST =
-          "<div class=\"form-group\">\n"
-                  + "<label class=\"col-form-label\" for=\"%1$s-ids\">%2$s: </label>\n"
-                  + "<select multiple class=\"form-control\" name=\"%1$sIds\"\n" +
-                  "          ng-model=\"object.%1$sIds\"\n" +
-                  "          ng-options=\"object.text for object in %1$sIds track by object.id\">\n"
-                  + "</select>\n"
-                  + "</div>";
+      "<div class=\"form-group\">\n"
+          + "<label class=\"col-form-label\" for=\"%1$s-ids\">%2$s: </label>\n"
+          + "<select multiple class=\"form-control\" name=\"%1$sIds\"\n"
+          + "          ng-model=\"object.%1$sIds\"\n"
+          + "          ng-options=\"object.text for object in %1$sIds track by object.id\">\n"
+          + "</select>\n"
+          + "</div>";
 
   private static Map<String, String> classToHtmlMap = new HashMap<>();
 
@@ -96,14 +96,22 @@ public class ClassField {
   public String htmlCode;
 
   public ClassField(String name, Type type, String bootstrapLabel, Boolean showInform) {
-    this(name, type instanceof ParameterizedType? ((ParameterizedType) type).getActualTypeArguments()[0]: type, bootstrapLabel, type instanceof ParameterizedType, showInform);
+    this(
+        name,
+        type instanceof ParameterizedType
+            ? ((ParameterizedType) type).getActualTypeArguments()[0]
+            : type,
+        bootstrapLabel,
+        type instanceof ParameterizedType,
+        showInform);
   }
 
-  public ClassField(String name, Type type, String bootstrapLabel, Boolean multiple, Boolean showInform) {
+  public ClassField(
+      String name, Type type, String bootstrapLabel, Boolean multiple, Boolean showInform) {
     this.name = name;
 
     Class classType = (Class) type;
-    if(!showInform){
+    if (!showInform) {
       this.htmlCode = null;
       return;
     }
@@ -117,7 +125,9 @@ public class ClassField {
                     BootstrapLabel bootstrapOptionLabel = null;
                     try {
                       bootstrapOptionLabel =
-                          classType.getField(enumValue.toString()).getAnnotation(BootstrapLabel.class);
+                          classType
+                              .getField(enumValue.toString())
+                              .getAnnotation(BootstrapLabel.class);
                     } catch (NoSuchFieldException e) {
                       e.printStackTrace();
                     }
@@ -128,12 +138,16 @@ public class ClassField {
                   });
       String optionHtml = String.join("", options.collect(Collectors.toList()));
       String htmlcode = String.format(classToHtmlMap.get("Enum"), name, bootstrapLabel, optionHtml);
-      if(multiple){
+      if (multiple) {
         htmlcode = htmlcode.replaceAll("<select", "<select multiple");
       }
       this.htmlCode = htmlcode;
     } else if (classToHtmlMap.get(classType.getName()) == null && multiple) {
-      this.htmlCode = String.format(classToHtmlMap.get("Multiple"), classType.getSimpleName().toLowerCase(), bootstrapLabel);
+      this.htmlCode =
+          String.format(
+              classToHtmlMap.get("Multiple"),
+              classType.getSimpleName().toLowerCase(),
+              bootstrapLabel);
     } else if (classToHtmlMap.get(classType.getName()) == null || multiple) {
       this.htmlCode = null;
     } else {

@@ -5,7 +5,6 @@ import com.colorofhope.ayitili.repository.BookRepository;
 import com.colorofhope.ayitili.repository.DBImageRepository;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.http.HttpStatus;
