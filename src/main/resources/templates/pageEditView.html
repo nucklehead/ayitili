@@ -9,27 +9,9 @@
 
 <!-- Page Content -->
 <div class="container" style="margin-top: 50px" ng-controller="pageEditController" th:attr="ng-init=${currentPage}?'pageId=\'' + ${currentPage.id} + '\''">
-    <div class="row">
-        <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert" hidden="">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <strong>Sa byen pase!</strong> Ou anrejistre non paj la.
-        </div>
-        <div id="update-alert" class="alert alert-info alert-dismissible fade show" role="alert" hidden="">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <strong>On pati fini!</strong>
-            <p ng-bind-html="update"></p>
-        </div>
-        <div id="error-alert" class="alert alert-danger alert-dismissible fade show" role="alert" hidden="">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <strong>Oh oh! Bagay yo myèl!</strong> {{ error }}.
-        </div>
-    </div>
+
+    <div th:replace="fragments/rowAlerts :: rowAlerts"></div>
+
     <div class="row justify-content-md-center">
         <form class="needs-validation col" ng-submit="savePage()" novalidate="" id="pageNameForm">
             <div class="form-group">
@@ -61,7 +43,7 @@
                             <div id="{{ $parent.$index + '-' + $index }}" ng-bind-html="col"></div>
                         </div>
                         <div class="col-2">
-                            <div class="btn-group-vertical" role="group" aria-label="Basic example">
+                            <div class="btn-group-vertical" role="group">
                                 <button type="button" class="btn btn-primary btn-circle" ng-if="!inEditMode($parent.$index + '-' + $index)" ng-click="editComponent($parent.$parent.$index + '-' + $index)">
                                     <span class="fa fa-edit fa-lg"></span>
                                 </button>

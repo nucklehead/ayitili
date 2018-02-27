@@ -7,6 +7,9 @@ app.filter('spaceToDash', function () {
     };
 });
 app.controller('pageEditController', function ($scope, $http, $window, $timeout) {
+    if(typeof(html2canvas) === "undefined"){
+        html2canvas = function () {return $.Deferred().resolve().promise()}
+    }
     $scope.rendering = false;
     $scope.update = "";
     $scope.currentPage = {
@@ -46,6 +49,9 @@ app.controller('pageEditController', function ($scope, $http, $window, $timeout)
         var content = component.summernote('code');
     //    do http
     //    loading
+        if($scope.currentPage.bodyRows[rowIndex] === undefined){
+            $scope.currentPage.bodyRows[rowIndex] = [];
+        }
         $scope.currentPage.bodyRows[rowIndex][columnIndex] = content;
         $scope.cancelEditComponent(componentID);
         $scope.updatePreview();
@@ -101,7 +107,7 @@ app.controller('pageEditController', function ($scope, $http, $window, $timeout)
             formData.append("bodyRows", row);
         });
         if($scope.currentPage.id){
-            path = path + '/' + $scope.currentPage.id
+            path = path + '/' + $scope.currentPage.id;
             method = 'PUT';
         }
         formData.append('_method', method);
@@ -113,45 +119,26 @@ app.controller('pageEditController', function ($scope, $http, $window, $timeout)
             transformRequest: angular.identity
         }).then(
         function(response) {
-            $("#success-alert").removeAttr('hidden');
-            $window.location.href = "/page/" + response.data.name +"/edit";
+            $("#success-alert").show();
+            $window.location.href = "/page/" + response.data.formatedName +"/edit";
         },
         function(error, status) {
             $scope.error = error;
-            $("#error-alert").removeAttr('hidden');
+            $("#error-alert").show();
         });
         $scope.formMethod = "post"
     };
 
-    $scope.updatePreview = function () {
-        $scope.rendering = true;
-
-        $timeout(function () {
-            html2canvas(document.querySelector("#page-render"), {
-                backgroundColor: null,
-                removeContainer: false,
-                async: true
-            }).then(function (canvas) {
-                $scope.preview = canvas.toDataURL('image/png');
-                $scope.rendering = false;
-                $scope.$apply();
-                console.log("Paj la paret.");
-            });
-        }, 0);
-
-    };
-    $scope.updatePreview();
-
-    function dataURItoBlob(dataURI) {
-        var byteString = atob(dataURI.split(',')[1]);
-        var ab = new ArrayBuffer(byteString.length);
-        var ia = new Uint8Array(ab);
-        for (var i = 0; i < byteString.length; i++) { ia[i] = byteString.charCodeAt(i); }
-        return new Blob([ab], { type: 'image/png' });
-    }
-
-    function updateComponent(rowIndex, columnIndex, name) {
-        var content = $scope.currentPage.bodyRows[rowIndex][columnIndex];
+    $scope.updateComponent = function (rowIndex, columnIndex, name, id) {
+        var rowKey = rowIndex;
+        var columnKey = columnIndex;
+        if(id)
+        {
+            $scope.componentID = "-" + id;
+            rowKey = id.split("-")[0];
+            columnKey = id.split("-")[1];
+        }
+        var content = $scope.currentPage.bodyRows[rowKey][columnKey];
         var formData = new FormData();
         formData.append("name", name);
         formData.append("rowIndex", rowIndex);
@@ -166,19 +153,48 @@ app.controller('pageEditController', function ($scope, $http, $window, $timeout)
             transformRequest: angular.identity
         }).then(
             function(response) {
-                $scope.update = $scope.update + "<br>Liy " + rowIndex + ", Kolòn " + columnIndex + " fini.";
-                $("#update-alert").removeAttr('hidden');
-                if($scope.currentPage.bodyRows[rowIndex +1] && $scope.currentPage.bodyRows[rowIndex + 1][columnIndex + 1]){
-                    updateComponent(rowIndex + 1, columnIndex + 1, name);
-                }
+                $scope.update = $scope.update + "<br>Pati sa anrejistre.";
+                $("#update-alert-" + id).show();
             },
             function(error, status) {
                 // Handle error here
                 $scope.error = error;
-                $("#error-alert").removeAttr('hidden');
+                $("#error-alert-" + id).show();
             });
 
     };
 
+    $scope.hideAlert = function (alertID) {
+        $('#' + alertID).hide();
+    };
+
+    $scope.updatePreview = function () {
+        $scope.rendering = true;
+
+        $timeout(function () {
+            html2canvas(document.querySelector("#page-render"), {
+                backgroundColor: null,
+                removeContainer: false,
+                async: true
+            }).then(function (canvas) {
+                if(canvas !== undefined){
+                    $scope.preview = canvas.toDataURL('image/png');
+                    $scope.rendering = false;
+                    $scope.$apply();
+                    console.log("Paj la paret.");
+                }
+            });
+        }, 0);
+
+    };
+    $scope.updatePreview();
+
+    function dataURItoBlob(dataURI) {
+        var byteString = atob(dataURI.split(',')[1]);
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) { ia[i] = byteString.charCodeAt(i); }
+        return new Blob([ab], { type: 'image/png' });
+    }
 
 });
