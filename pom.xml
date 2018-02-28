@@ -108,6 +108,11 @@
       <artifactId>angular-datatables</artifactId>
       <version>0.6.2</version>
     </dependency>
+    <dependency>
+      <groupId>org.webjars.bower</groupId>
+      <artifactId>datatables</artifactId>
+      <version>1.10.16</version>
+    </dependency>
     <!-- swagger-jersey2 version must use the same swagger-core as springfox-swagger -->
     <dependency>
       <groupId>io.swagger</groupId>

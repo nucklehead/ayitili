@@ -1,5 +1,6 @@
 package com.colorofhope.ayitili.web;
 
+import com.colorofhope.ayitili.model.Account;
 import com.colorofhope.ayitili.model.AccountType;
 import com.colorofhope.ayitili.model.Nav;
 import com.colorofhope.ayitili.repository.NavRepository;
@@ -14,18 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @ControllerAdvice
 public class ModelAttributeControllerAdvice {
   @Autowired NavRepository navRepository;
-
-  @ModelAttribute("iniere")
-  public String test(Authentication user) {
-    //    Map<String, String> links1 = navlinks(user);
-    //    links1.putAll(navButtons(null));
-    //    links1.putAll(navForms(user));
-    //    List<Nav> myNavs = links1.entrySet().stream().map(nav -> new Nav(nav.getKey(),
-    // nav.getValue(), NavType.INTERNAL, Arrays.asList(AccountType.GUEST_MEMBER),
-    // Arrays.asList())).collect(Collectors.toList());
-    //    navRepository.save(myNavs);
-    return "tesy";
-  }
 
   @ModelAttribute("accessibleNavs")
   public List accessibleNavs(Authentication user) {
@@ -49,37 +38,15 @@ public class ModelAttributeControllerAdvice {
     return accessibleNavs;
   }
 
-  @ModelAttribute("navLinks")
-  public Map navlinks(Authentication user) {
-    Map<String, String> navLinks = new LinkedHashMap<>();
-    navLinks.put("Akèy", "/");
-    navLinks.put("Liv", "/showBooks");
-    if (user != null) {
-      if (user.getAuthorities().contains(new SimpleGrantedAuthority(AccountType.ADMIN.name()))) {
-        navLinks.put("Ajoute manm", "/ajouteManm");
-        navLinks.put("Montre Banyè yo", "/showBanners");
-      }
-      navLinks.put("Kont:" + user.getName(), "#");
-    }
-    return navLinks;
-  }
-
-  @ModelAttribute("navButtons")
-  public Map navButtons(Authentication user) {
-    Map<String, String> navButtons = new LinkedHashMap<>();
-    if (user == null) {
-      navButtons.put("Antre", "#antre");
-    }
-    return navButtons;
-  }
-
-  @ModelAttribute("navForms")
-  public Map navForms(Authentication user) {
-    Map<String, String> navForms = new LinkedHashMap<>();
-    if (user != null) {
-      navForms.put("Soti", "/logout");
-    }
-    return navForms;
+  @ModelAttribute("authorized")
+  public Boolean authorized(Authentication user) {
+    return user != null &&
+            Arrays.asList(AccountType.ADMIN, AccountType.LIBRARIAN)
+                    .containsAll(
+                            user.getAuthorities()
+                                    .stream()
+                                    .map(authority -> AccountType.valueOf(authority.getAuthority()))
+                                    .collect(Collectors.toList()));
   }
 
   @ModelAttribute("author")
@@ -145,5 +112,15 @@ public class ModelAttributeControllerAdvice {
   @ModelAttribute("signupButtonText")
   public String signupButtonText() {
     return "Anrejistre";
+  }
+
+  @ModelAttribute("goToEditText")
+  public String goToEditText() {
+    return "Change";
+  }
+
+  @ModelAttribute("stopEditingText")
+  public String stopEditingText() {
+    return "Sispann";
   }
 }

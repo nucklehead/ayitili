@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="fragments/headImports :: head"></head>
+
+    <body ng-app="ayitili-app">
+        <script src="/js/pageListController.js"></script>
+
+        <nav th:replace="fragments/navbar :: nav"></nav>
+
+        <!-- Page Content -->
+        <div class="container jumbotron" style="margin-top: 50px; background-color: white">
+            <div ng-controller="pageTableController">
+                <p class="text-info text-center"><strong>{{ message }}</strong></p>
+                <br/>
+                <table datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance" class="table table-striped table-bordered"></table>
+                <div th:replace="fragments/modals/pagePreviewModal :: pagePreview(extraClass='')"></div>
+            </div>
+        </div>
+
+        <!-- /.container -->
+    
+        <footer th:replace="fragments/footer :: footer"></footer>   
+    </body>
+</html>

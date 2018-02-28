@@ -53,9 +53,6 @@ public class AppController {
     model.addAttribute("books", Lists.partition(bookRepository.findAll(), numBooksPerCarousel));
     model.addAttribute("numBooksPerCarousel", numBooksPerCarousel);
 
-    // TODO
-    // https://stackoverflow.com/questions/38176994/thymeleaf-with-springboot-how-to-loop-model-and-delete
-
     // TODO: will be useful for user actions
     // https://www.codeply.com/go/JVP2nxfv0p/bootstrap-4-form-examples
 
@@ -111,14 +108,13 @@ public class AppController {
   }
 
   @RequestMapping(method = RequestMethod.GET, path = "/page/{name}")
-  public String renderDbPage(Model model, String name) {
+  public String renderDbPage(Model model, @PathVariable String name) {
     Page page = pageRepository.findByFormatedName(name);
-    if (page.active) {
+    if (page != null && page.active) {
       model.addAttribute("currentPage", page);
       model.addAttribute("title", page.name);
       return "pageView";
     }
-    //    TODO you know
     return "error/404";
   }
 
@@ -139,5 +135,12 @@ public class AppController {
   public String renderDbPage(Model model) {
     model.addAttribute("title", "Kreye paj");
     return "pageEditView";
+  }
+
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @RequestMapping(method = RequestMethod.GET, path = "/page/list")
+  public String listDbPage(Model model) {
+    model.addAttribute("title", "Montre paj yo");
+    return "pageList";
   }
 }

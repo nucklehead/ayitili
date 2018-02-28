@@ -82,6 +82,20 @@ public class PageController extends DefaultController<PageRepository, Page> {
     super.delete(id);
   }
 
+  @RequestMapping(method = RequestMethod.POST, path = "/{id}/activate")
+  public void activate(@PathVariable String id) {
+    Page page = repository.findOne(id);
+    page.active = true;
+    repository.save(page);
+  }
+
+  @RequestMapping(method = RequestMethod.POST, path = "/{id}/deactivate")
+  public void deactivate(@PathVariable String id) {
+    Page page = repository.findOne(id);
+    page.active = false;
+    repository.save(page);
+  }
+
   @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})
   void handleBadRequests(HttpServletResponse response) throws IOException {
     response.sendError(HttpStatus.BAD_REQUEST.value());
@@ -100,7 +114,7 @@ public class PageController extends DefaultController<PageRepository, Page> {
     homePage.name = "Akèy";
     homePage.formatedName = "akèy";
     homePage.active = true;
-    File imageFIle = new ClassPathResource("static/img/akey.png").getFile();
+    File imageFIle = new ClassPathResource("static/img/colorofhop-logo.jpg").getFile();
     DiskFileItem fileItem =  new DiskFileItem("formThumbnail", MediaType.IMAGE_JPEG_VALUE, true, imageFIle.getName(), Math.toIntExact(imageFIle.length()), imageFIle);
     fileItem.getOutputStream();
     homePage.formThumbnail = new CommonsMultipartFile(fileItem);
