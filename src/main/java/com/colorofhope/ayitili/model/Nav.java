@@ -5,6 +5,7 @@ import static com.colorofhope.ayitili.model.BootstrapHtmlDisplay.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 public class Nav extends DBModel {
   @BootstrapHtmlDisplay(HTML_TEXT_DIV)
@@ -25,6 +26,7 @@ public class Nav extends DBModel {
 
   @BootstrapHtmlDisplay(HTML_TEXT_DIV)
   @BootstrapLabel("Lis deroulan")
+  @DBRef
   public List<Nav> dropdown = new ArrayList<>();
 
   @Transient public List<String> navIds = new ArrayList<>();

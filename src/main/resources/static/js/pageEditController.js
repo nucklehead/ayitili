@@ -17,7 +17,9 @@ app.controller('pageEditController', function ($scope, $http, $window, $timeout)
             ["Egzanp tèx.", "Egzanp tèx."],
             ["Egzanp tèx.", "Egzanp tèx."],
             ["Egzanp tèx.", "Egzanp tèx."]
-        ]
+        ],
+        tags: [],
+        tagsFormJson: []
     };
 
     $timeout(function () {
@@ -135,6 +137,11 @@ app.controller('pageEditController', function ($scope, $http, $window, $timeout)
         function(error, status) {
             $scope.error = error;
             $("#error-alert").show();
+            $scope.currentPage.bodyRows.forEach(function (row, rowIndex) {
+                row.forEach(function (col, colIndex) {
+                    row[colIndex] = col.replace(new RegExp(commaReplacer,"g"), ",")
+                });
+            });
         });
         $scope.formMethod = "post"
     };

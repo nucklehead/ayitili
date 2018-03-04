@@ -53,6 +53,8 @@ public class AppController {
     model.addAttribute("books", Lists.partition(bookRepository.findAll(), numBooksPerCarousel));
     model.addAttribute("numBooksPerCarousel", numBooksPerCarousel);
 
+    model.addAttribute("homePage", pageRepository.findByFormatedName("akèy"));
+
     // TODO: will be useful for user actions
     // https://www.codeply.com/go/JVP2nxfv0p/bootstrap-4-form-examples
 
