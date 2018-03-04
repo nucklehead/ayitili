@@ -87,7 +87,7 @@ app.controller('pageTableController', function ($scope, $http, $window, $timeout
         }).join();
     }
     function formatedNameToLink(formatedName, type, full, meta) {
-        return "/api/page/" + formatedName;
+        return "<a href='/page/" + formatedName + "'>/page/" + formatedName + "</a>";
     }
 
     function rowCallback(nRow, page, iDisplayIndex, iDisplayIndexFull) {
