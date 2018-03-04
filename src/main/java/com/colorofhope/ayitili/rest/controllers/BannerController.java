@@ -42,7 +42,7 @@ public class BannerController extends DefaultController<BannerRepository, Banner
   }
 
   @Override
-  public void delete(@PathVariable String id){
+  public void delete(@PathVariable String id) {
     dbImageRepository.delete(repository.findOne(id).image.id);
     super.delete(id);
   }

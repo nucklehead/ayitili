@@ -5,6 +5,9 @@ import static com.colorofhope.ayitili.model.BootstrapHtmlDisplay.HTML_TEXT_DIV;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -38,6 +41,15 @@ public class Page extends DBModel {
   @Transient
   public MultipartFile formThumbnail;
 
+  @BootstrapHtmlDisplay(HTML_IMAGE_DIV)
+  @BootstrapLabel("Etikèt")
+  @DBRef
+  public List<Tag> tags = Arrays.asList();
+
+  @BootstrapLabel("Viyèt")
+  @Transient
+  public List<String> tagsFormJson = Arrays.asList();
+
   public Page() {}
 
   public Page(
@@ -46,13 +58,17 @@ public class Page extends DBModel {
       Boolean active,
       List<List<String>> bodyRows,
       MultipartFile formThumbnail,
-      DBImage thumbnail) {
+      DBImage thumbnail,
+      List<Tag> tags,
+      List<String> tagsFormJson) {
     this.name = name;
     this.formatedName = formatedName;
     this.active = active;
     this.bodyRows = bodyRows;
     this.formThumbnail = formThumbnail;
     this.thumbnail = thumbnail;
+    this.tags = tags;
+    this.tagsFormJson = tagsFormJson;
   }
 
   public String getName() {
@@ -101,5 +117,27 @@ public class Page extends DBModel {
 
   public void setThumbnail(DBImage thumbnail) {
     this.thumbnail = thumbnail;
+  }
+
+  public List<Tag> getTags() {
+    return tags;
+  }
+
+  public void setTags(List<Tag> tags) {
+    this.tags = tags;
+  }
+
+  public List<String> getTagsFormJson() {
+    return tags.stream().map(tag -> {
+      try {
+        return tag.toJSON();
+      } catch (JsonProcessingException e) {
+        return  "";
+      }
+    }).collect(Collectors.toList());
+  }
+
+  public void setTagsFormJson(List<String> tagsFormJson) {
+    this.tagsFormJson = tagsFormJson;
   }
 }

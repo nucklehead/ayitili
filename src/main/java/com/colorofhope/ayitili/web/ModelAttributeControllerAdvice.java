@@ -1,6 +1,5 @@
 package com.colorofhope.ayitili.web;
 
-import com.colorofhope.ayitili.model.Account;
 import com.colorofhope.ayitili.model.AccountType;
 import com.colorofhope.ayitili.model.Nav;
 import com.colorofhope.ayitili.repository.NavRepository;
@@ -8,7 +7,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -40,13 +38,13 @@ public class ModelAttributeControllerAdvice {
 
   @ModelAttribute("authorized")
   public Boolean authorized(Authentication user) {
-    return user != null &&
-            Arrays.asList(AccountType.ADMIN, AccountType.LIBRARIAN)
-                    .containsAll(
-                            user.getAuthorities()
-                                    .stream()
-                                    .map(authority -> AccountType.valueOf(authority.getAuthority()))
-                                    .collect(Collectors.toList()));
+    return user != null
+        && Arrays.asList(AccountType.ADMIN, AccountType.LIBRARIAN)
+            .containsAll(
+                user.getAuthorities()
+                    .stream()
+                    .map(authority -> AccountType.valueOf(authority.getAuthority()))
+                    .collect(Collectors.toList()));
   }
 
   @ModelAttribute("author")

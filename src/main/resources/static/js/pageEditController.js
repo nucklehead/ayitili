@@ -28,10 +28,14 @@ app.controller('pageEditController', function ($scope, $http, $window, $timeout)
                     if($scope.currentPage.bodyRows.length === 0){
                         $scope.addRow(0);
                     }
+                    $scope.updatePreview();
                 },
                 function(data) {
                     // Handle error here
                 });
+        }
+        else {
+            $scope.updatePreview();
         }
     }, 0);
 
@@ -97,15 +101,21 @@ app.controller('pageEditController', function ($scope, $http, $window, $timeout)
             return;
         }
         var pageSimpleName = formData.get("formatedName").replace("/page/", "");
+        var commaReplacer = Base64.encode(pageSimpleName);
         formData.set("formatedName", pageSimpleName);
         formData.append("formThumbnail", dataURItoBlob($scope.preview), pageSimpleName + ".png");
         $scope.currentPage.bodyRows.forEach(function (row, rowIndex) {
-
             row.forEach(function (col, colIndex) {
-                row[colIndex] = col.replace(/,/g, window.btoa(pageSimpleName))
+                row[colIndex] = col.replace(/,/g, commaReplacer)
             });
             formData.append("bodyRows", row);
         });
+
+        $scope.currentPage.tagsFormJson = $scope.currentPage.tagsFormJson.map(function (tagFormJson) {
+            return tagFormJson.replace(/,/g, commaReplacer);
+        });
+
+        formData.append('tagsFormJson', $scope.currentPage.tagsFormJson);
         if($scope.currentPage.id){
             path = path + '/' + $scope.currentPage.id;
             method = 'PUT';
@@ -187,7 +197,56 @@ app.controller('pageEditController', function ($scope, $http, $window, $timeout)
         }, 0);
 
     };
-    $scope.updatePreview();
+
+    $scope.updateTags = function () {
+        var tag = null;
+        if(typeof $scope.inputTag === 'object'){
+            tag = $scope.inputTag;
+        }
+        else if($scope.inputTag.substr(-1).match(/[,\s\n]/)){
+            tag = {name: $scope.inputTag.replace(/[,\s\n]/, "")};
+        }
+        else {
+            return;
+        }
+        $scope.addTag(tag);
+        $scope.inputTag = "";
+
+    };
+
+    $scope.addTag = function (tag) {
+        if($scope.currentPage.tags.findIndex(function (taginList) {return taginList.name === tag.name}) === -1){
+            $scope.currentPage.tags.push(tag);
+            var newTagJson = JSON.stringify(tag);
+            $scope.currentPage.tagsFormJson.push(newTagJson);
+        }
+    };
+
+    $scope.removeTag = function (tag) {
+        var tagIndex = $scope.currentPage.tags.findIndex(function (taginList) {return taginList.name === tag.name});
+        if(tagIndex !== -1){
+            $scope.currentPage.tags.splice(tagIndex, 1);
+            $scope.currentPage.tagsFormJson.splice(tagIndex, 1);
+        }
+    };
+
+    $scope.badgeClass = function (badgeName) {
+        var firstCharacterAscii = badgeName.charCodeAt(0);
+        var classNum = firstCharacterAscii%6;
+        switch(classNum){
+            case 0: return "badge-primary";
+            case 1: return "badge-success";
+            case 2: return "badge-danger";
+            case 3: return "badge-warning";
+            case 4: return "badge-info";
+            case 5: return "badge-dark";
+        }
+    };
+
+     $http.get("/api/tag").then(function (response) {
+         $scope.tags = response.data;
+    });
+
 
     function dataURItoBlob(dataURI) {
         var byteString = atob(dataURI.split(',')[1]);

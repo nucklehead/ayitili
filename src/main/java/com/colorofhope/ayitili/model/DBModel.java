@@ -4,6 +4,8 @@ import static com.colorofhope.ayitili.model.BootstrapHtmlDisplay.HTML_IGNORE_DIV
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -69,6 +71,12 @@ public abstract class DBModel {
   public String toJSON() throws JsonProcessingException {
     ObjectMapper mapper = new ObjectMapper();
     return mapper.writeValueAsString(this);
+  }
+
+  public void fromJSON(String json) throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    DBModel model = mapper.readValue(json, this.getClass());
+    merge(model);
   }
 
   public void merge(DBModel that) {

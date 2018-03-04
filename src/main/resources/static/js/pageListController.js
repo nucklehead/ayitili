@@ -1,4 +1,4 @@
-app.controller('pageTableController', function ($scope, $http, $window, $compile, DTOptionsBuilder, DTColumnBuilder) {
+app.controller('pageTableController', function ($scope, $http, $window, $timeout, $compile, DTOptionsBuilder, DTColumnBuilder) {
     var tableLanguage = {
         "sEmptyTable":     "Pa gen done pou tab sa a",
         "sInfo":           "Nap montre _START_ jiska _END_ nan _TOTAL_ atik",
@@ -6,7 +6,7 @@ app.controller('pageTableController', function ($scope, $http, $window, $compile
         "sInfoFiltered":   "(triye nan _MAX_ atik an total)",
         "sInfoPostFix":    "",
         "sInfoThousands":  ",",
-        "sLengthMenu":     "Motre _MENU_ atik",
+        "sLengthMenu":     "Mnotre _MENU_ atik",
         "sLoadingRecords": "Nap chaje...",
         "sProcessing":     "Nap pwosede...",
         "sSearch":         "Chache:",
@@ -30,11 +30,14 @@ app.controller('pageTableController', function ($scope, $http, $window, $compile
         .withLanguage(tableLanguage)
         .withPaginationType('full_numbers')
         .withOption('createdRow', createdRow)
-        .withOption('rowCallback', rowCallback);;
+        .withOption('drawCallback', drawCallback)
+        .withOption('rowCallback', rowCallback);
     $scope.dtColumns = [
         DTColumnBuilder.newColumn('name').withTitle('Non'),
         DTColumnBuilder.newColumn('formatedName').withTitle('Lyen')
             .renderWith(formatedNameToLink),
+        DTColumnBuilder.newColumn('tags').withTitle('Etikèt')
+            .renderWith(tagsHtml),
         DTColumnBuilder.newColumn("thumbnail").withTitle('Apèsi').notSortable()
             .renderWith(imagesHtml),
         DTColumnBuilder.newColumn(null).withTitle('Aktive/Deaktive').notSortable()
@@ -78,6 +81,11 @@ app.controller('pageTableController', function ($scope, $http, $window, $compile
             '</a>';
     }
 
+    function tagsHtml(tags, type, full, meta) {
+        return tags.map(function (tag) {
+            return  '<span class="badge ' + badgeClass(tag.name) +'">' + tag.name +'</span>'
+        }).join();
+    }
     function formatedNameToLink(formatedName, type, full, meta) {
         return "/api/page/" + formatedName;
     }
@@ -91,4 +99,24 @@ app.controller('pageTableController', function ($scope, $http, $window, $compile
         });
         return nRow;
     }
+
+    // Make this a global method
+    function badgeClass (badgeName) {
+        var firstCharacterAscii = badgeName.charCodeAt(0);
+        var classNum = firstCharacterAscii%6;
+        switch(classNum){
+            case 0: return "badge-primary";
+            case 1: return "badge-success";
+            case 2: return "badge-danger";
+            case 3: return "badge-warning";
+            case 4: return "badge-info";
+            case 5: return "badge-dark";
+        }
+    }
+
+    function drawCallback(settings) {
+
+
+    }
+
 });
