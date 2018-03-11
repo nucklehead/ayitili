@@ -15,7 +15,7 @@ public class ModelAttributeControllerAdvice {
   @Autowired NavRepository navRepository;
 
   @ModelAttribute("accessibleNavs")
-  public List accessibleNavs(Authentication user) {
+  public List<Nav> accessibleNavs(Authentication user) {
     List<Nav> allNavs = navRepository.findAll();
     allNavs.sort(Comparator.comparing(Nav::getType).thenComparing(Nav::getText));
     List<AccountType> userAccess = new ArrayList<>();
@@ -33,7 +33,23 @@ public class ModelAttributeControllerAdvice {
             .stream()
             .filter(nav -> nav.accessTypes.containsAll(userAccess))
             .collect(Collectors.toList());
+    accessibleNavs.removeAll(highPrivilegdeNavs(user));
     return accessibleNavs;
+  }
+
+  @ModelAttribute("highPrivilegdeNavs")
+  public List<Nav> highPrivilegdeNavs(Authentication user) {
+    if(!authorized(user)){
+      return Arrays.asList();
+    }
+    List<AccountType> highPrivilegdes = Arrays.asList(AccountType.LIBRARIAN, AccountType.ADMIN);
+    List<Nav> allNavs = navRepository
+            .findAll()
+            .stream()
+            .filter(nav -> highPrivilegdes.containsAll(nav.accessTypes))
+            .collect(Collectors.toList());
+    allNavs.sort(Comparator.comparing(Nav::getType).thenComparing(Nav::getText));
+    return allNavs;
   }
 
   @ModelAttribute("authorized")

@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" th:attr="ng-controller=${editMode}?editController">
    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
      <div class="container">
+       <a th:if="${authorized}"  class="sidebar-toggle text-light mr-3"><i class="fa fa-bars"></i></a>
        <a class="navbar-brand" href="/" th:inline="text">[[${siteName}]] <small th:text="${siteSubtitle}"></small></a>
        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span>

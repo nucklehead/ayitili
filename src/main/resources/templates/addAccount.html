@@ -4,16 +4,24 @@
     <head th:replace="fragments/headImports :: head"></head>
 
     <body>
-        <nav th:replace="fragments/navbar :: nav"></nav>   
-        
-        <!-- Page Content -->
-        <div class="container" style="margin-top: 50px">
+        <nav th:replace="fragments/navbar :: nav"></nav>
+        <div class="d-flex" style="margin-top: 20px">
 
-          <form th:replace="fragments/forms/modelInput :: modelEdit(path='/api/account', object=${account})"></form>
+            <nav th:replace="fragments/sidebar :: sidebar"></nav>
 
+            <!-- Page Content -->
+            <div class="content p-4">
+
+                <!-- Page Content -->
+                <div class="container">
+
+                  <form th:replace="fragments/forms/modelInput :: modelEdit(path='/api/account', object=${account}, showAllinForm=true)"></form>
+
+                </div>
+                <!-- /.container -->
+
+            </div>
         </div>
-        <!-- /.container -->
-    
-        <footer th:replace="fragments/footer :: footer"></footer>   
+        <footer th:replace="fragments/footer :: footer"></footer>
     </body>
 </html>

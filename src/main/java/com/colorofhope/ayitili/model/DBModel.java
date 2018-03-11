@@ -4,11 +4,11 @@ import static com.colorofhope.ayitili.model.BootstrapHtmlDisplay.HTML_IGNORE_DIV
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.data.annotation.Id;
@@ -95,5 +95,19 @@ public abstract class DBModel {
                 e.printStackTrace();
               }
             });
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    DBModel model = (DBModel) o;
+    return Objects.equals(id, model.id);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(id);
   }
 }

@@ -4,6 +4,7 @@ import com.colorofhope.ayitili.model.Page;
 import com.colorofhope.ayitili.model.Tag;
 import com.colorofhope.ayitili.repository.DBImageRepository;
 import com.colorofhope.ayitili.repository.PageRepository;
+import com.colorofhope.ayitili.repository.TagRepository;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -11,8 +12,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
-
-import com.colorofhope.ayitili.repository.TagRepository;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
@@ -136,34 +135,40 @@ public class PageController extends DefaultController<PageRepository, Page> {
     create(homePage, null);
   }
 
-  private List<List<String>> reformatBodyRows(List<List<String>> bodyRows, String commaReplacer){
+  private List<List<String>> reformatBodyRows(List<List<String>> bodyRows, String commaReplacer) {
     return bodyRows
-            .stream()
-            .map(
-                    row ->
-                            row.stream()
-                                    .map(col -> col.replaceAll(commaReplacer, ","))
-                                    .collect(Collectors.toList()))
-            .collect(Collectors.toList());
+        .stream()
+        .map(
+            row ->
+                row.stream()
+                    .map(col -> col.replaceAll(commaReplacer, ","))
+                    .collect(Collectors.toList()))
+        .collect(Collectors.toList());
   }
 
-  private  List<Tag> reformatJsonAndCreateTags(List<String> tagsFormJson, String commaReplacer){
-    List<Tag> tags = tagsFormJson.stream().map(tagJson -> {
-      Tag tag = null;
-      try {
-        tag = new Tag();
-        tag.fromJSON(tagJson.replaceAll(commaReplacer, ","));
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-      return tag;
-    }).collect(Collectors.toList());
+  private List<Tag> reformatJsonAndCreateTags(List<String> tagsFormJson, String commaReplacer) {
+    List<Tag> tags =
+        tagsFormJson
+            .stream()
+            .map(
+                tagJson -> {
+                  Tag tag = null;
+                  try {
+                    tag = new Tag();
+                    tag.fromJSON(tagJson.replaceAll(commaReplacer, ","));
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
+                  return tag;
+                })
+            .collect(Collectors.toList());
 
-    tags.forEach(tag -> {
-      if(tag.id == null){
-        tag.merge(tagRepository.save(tag));
-      }
-    });
+    tags.forEach(
+        tag -> {
+          if (tag.id == null) {
+            tag.merge(tagRepository.save(tag));
+          }
+        });
     return tags;
   }
 }

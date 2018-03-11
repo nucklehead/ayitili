@@ -1,11 +1,9 @@
 package com.colorofhope.ayitili.model;
 
-
 import org.springframework.data.mongodb.core.index.Indexed;
 
 public class Tag extends DBModel {
-  @Indexed
-  public String name;
+  @Indexed public String name;
 
   public Tag() {}
 

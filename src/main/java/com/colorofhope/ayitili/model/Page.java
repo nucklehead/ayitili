@@ -3,11 +3,10 @@ package com.colorofhope.ayitili.model;
 import static com.colorofhope.ayitili.model.BootstrapHtmlDisplay.HTML_IMAGE_DIV;
 import static com.colorofhope.ayitili.model.BootstrapHtmlDisplay.HTML_TEXT_DIV;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -128,13 +127,16 @@ public class Page extends DBModel {
   }
 
   public List<String> getTagsFormJson() {
-    return tags.stream().map(tag -> {
-      try {
-        return tag.toJSON();
-      } catch (JsonProcessingException e) {
-        return  "";
-      }
-    }).collect(Collectors.toList());
+    return tags.stream()
+        .map(
+            tag -> {
+              try {
+                return tag.toJSON();
+              } catch (JsonProcessingException e) {
+                return "";
+              }
+            })
+        .collect(Collectors.toList());
   }
 
   public void setTagsFormJson(List<String> tagsFormJson) {

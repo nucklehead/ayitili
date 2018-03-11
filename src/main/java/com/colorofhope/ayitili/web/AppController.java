@@ -145,4 +145,11 @@ public class AppController {
     model.addAttribute("title", "Montre paj yo");
     return "pageList";
   }
+
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @RequestMapping(method = RequestMethod.GET, path = "/images/list")
+  public String listDbImage(Model model) {
+    model.addAttribute("title", "Montre imaj yo");
+    return "dbImageList";
+  }
 }
