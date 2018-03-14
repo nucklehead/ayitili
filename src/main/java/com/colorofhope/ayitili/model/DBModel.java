@@ -2,6 +2,7 @@ package com.colorofhope.ayitili.model;
 
 import static com.colorofhope.ayitili.model.BootstrapHtmlDisplay.HTML_IGNORE_DIV;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -12,7 +13,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 
+@Document(indexName = "ayitili")
 public abstract class DBModel {
   @BootstrapHtmlDisplay(HTML_IGNORE_DIV)
   @BootstrapLabel("id")
