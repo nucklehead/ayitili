@@ -4,15 +4,19 @@ import org.springframework.data.mongodb.core.index.Indexed;
 
 public class Account extends DBModel {
   @Indexed
+  @SearchResponseIgnore
   @BootstrapLabel("Non Itilizatè")
   public String username;
 
+  @SearchResponseIgnore
   @BootstrapLabel("Mo pass")
   public String password;
 
+  @SearchResponseIgnore
   @BootstrapLabel("Kourye-e")
   public String email;
 
+  @SearchResponseIgnore
   @BootstrapLabel("Tefòn")
   public String phone;
 
@@ -22,9 +26,11 @@ public class Account extends DBModel {
   @BootstrapLabel("Non")
   public String lastName;
 
+  @SearchResponseIgnore
   @BootstrapLabel(value = "Kalite kont lan", showInForm = false)
   public AccountType type = AccountType.MEMBER;
 
+  @SearchResponseIgnore
   @BootstrapLabel(value = "Pwen", showInForm = false)
   public Long points = 0L;
 

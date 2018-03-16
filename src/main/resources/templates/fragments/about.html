@@ -1,5 +1,5 @@
  <!-- Features Section -->
- <div ng-controller="pageEditController" style="margin-top: 30px" th:fragment="about" xmlns:th="http://www.thymeleaf.org">
+ <div th:attr="ng-controller=${editMode}?pageEditController" style="margin-top: 30px" th:fragment="about" xmlns:th="http://www.thymeleaf.org">
      <div th:replace="fragments/rowAlerts :: rowAlerts"></div>
      <div id="home-about" th:utext="${homePage.bodyRows.get(0).get(0)}"></div>
      <div th:if="${editMode}" class="btn-group" role="group">

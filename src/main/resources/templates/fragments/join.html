@@ -1,5 +1,5 @@
 <!-- Call to Action Section -->
-<div class="row mb-4" ng-controller="pageEditController" th:fragment="join" xmlns:th="http://www.thymeleaf.org">
+<div class="row mb-4" th:attr="ng-controller=${editMode}?pageEditController" th:fragment="join" xmlns:th="http://www.thymeleaf.org">
     <div th:replace="fragments/rowAlerts :: rowAlerts"></div>
     <div id="home-join" th:utext="${homePage.bodyRows.get(1).get(0)}"> </div>
     <div th:if="${editMode}" class="btn-group" role="group">

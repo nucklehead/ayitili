@@ -2,7 +2,7 @@ package com.colorofhope.ayitili.model;
 
 import static com.colorofhope.ayitili.model.BootstrapHtmlDisplay.HTML_IGNORE_DIV;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -12,10 +12,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-@Document(indexName = "ayitili")
+@Document(indexName = "ayitili", type = "dbmodels")
+// This is only used when saving to Elastic Search
+@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
 public abstract class DBModel {
   @BootstrapHtmlDisplay(HTML_IGNORE_DIV)
   @BootstrapLabel("id")
@@ -69,6 +72,23 @@ public abstract class DBModel {
                         .getAnnotation(BootstrapHtmlDisplay.class)
                         .value()
                         .equals(HTML_IGNORE_DIV));
+  }
+
+  public void clearSearchResponseIgnoreFields() {
+    Arrays.stream(this.getClass().getFields())
+            .forEach(
+                    field -> {
+                      if (field.getAnnotation(SearchResponseIgnore.class) != null
+                              && field
+                              .getAnnotation(SearchResponseIgnore.class)
+                              .value()){
+                        try {
+                          field.set(this, null);
+                        } catch (IllegalAccessException e) {
+                          e.printStackTrace();
+                        }
+                      }
+                    });
   }
 
   public String toJSON() throws JsonProcessingException {

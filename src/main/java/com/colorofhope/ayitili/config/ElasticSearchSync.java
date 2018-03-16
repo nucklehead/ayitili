@@ -23,8 +23,6 @@ public class ElasticSearchSync implements CommandLineRunner {
     public void run(String... strings) throws Exception {
         repositories.forEach(repository -> {
             repository.findAll().forEach(model -> {
-//                TODO: why is this not persisting after you do find all
-                model.id = null;
                 dbModelESRepository.save(model);
             });
         });

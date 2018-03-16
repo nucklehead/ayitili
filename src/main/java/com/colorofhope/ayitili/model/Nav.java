@@ -16,6 +16,7 @@ public class Nav extends DBModel {
   @BootstrapLabel("Lyen")
   public String link;
 
+  @SearchResponseIgnore
   @BootstrapHtmlDisplay(HTML_TEXT_DIV)
   @BootstrapLabel("Kalite")
   public NavType type;
@@ -29,6 +30,7 @@ public class Nav extends DBModel {
   @DBRef
   public List<Nav> dropdown = new ArrayList<>();
 
+  @SearchResponseIgnore
   @Transient public List<String> navIds = new ArrayList<>();
 
   public Nav() {}

@@ -23,10 +23,12 @@ public class Page extends DBModel {
   @Indexed
   public String formatedName;
 
+  @SearchResponseIgnore
   @BootstrapHtmlDisplay(HTML_TEXT_DIV)
   @BootstrapLabel("Aktiv")
   public Boolean active = false;
 
+  @SearchResponseIgnore
   @BootstrapHtmlDisplay(HTML_IMAGE_DIV)
   @BootstrapLabel("Kò")
   public List<List<String>> bodyRows = Arrays.asList();

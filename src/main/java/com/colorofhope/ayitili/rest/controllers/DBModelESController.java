@@ -19,7 +19,7 @@ public class DBModelESController {
   @Autowired
   DBModelESRepository repository;
 
-  @RequestMapping(method = RequestMethod.GET, path = "/text")
+  @RequestMapping(method = RequestMethod.GET)
   public List<DBModel> searchText(@RequestParam("text") String text, Pageable pageable) {
     return repository.findMatched(text, pageable).getContent();
   }
