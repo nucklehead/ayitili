@@ -1,11 +1,8 @@
 app.controller('searchController', function ($scope, $http, $filter) {
 
-    $scope.inputSearch = "";
-    $scope.results = [];
-
-    $scope.search = function () {
-        $http.get("/search?text=" + $scope.inputSearch).then(function (response) {
-            $scope.results = response.data;
+    $scope.search = function (inputSearch) {
+        return $http.get("/search?text=" + inputSearch).then(function (response) {
+            return response.data;
         });
     };
 

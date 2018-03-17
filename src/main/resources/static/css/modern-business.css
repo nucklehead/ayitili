@@ -76,3 +76,13 @@ body {
   height: 15px;
   width: 12px;
 }
+
+#custom-search-input {
+  padding: 18px;
+}
+
+#custom-search-input .input-group input,
+#custom-search-input .input-group > div,
+#custom-search-input .input-group ul {
+  width: 100% !important;
+}

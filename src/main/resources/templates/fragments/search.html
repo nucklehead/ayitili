@@ -3,18 +3,19 @@
         <div style="margin: 5px;" ng-bind-html="$parent.$parent.$parent.getTemplate(match.model, query)"></div>
     </script>
     <h3 class="text-center">Chache</h3>
-    <div id="custom-search-input" class="jumbotron" style="padding: 18px">
-        <!--<div class="input-group">-->
+    <div id="custom-search-input" class="jumbotron">
+        <div class="input-group">
             <input type="text"
                    placeholder="Chache"
-                   uib-typeahead="result as result.id for result in results | limitTo:5"
+                   uib-typeahead="result as result.id for result in search($viewValue) | limitTo:5"
                    typeahead-template-url="resultTemplate.html"
                    typeahead-show-hint="true"
                    typeahead-min-length="1"
                    typeahead-on-select="gotoResult($item, $model, $label, $event)"
+                   typeahead-loading="loadingLocations"
+                   typeahead-no-results="noResults"
                    class="form-control rounded-0 form-control-lg"
                    ng-model="inputSearch"
-                   ng-change="search()"
                    ng-trim="false"
                    rows="1">
             </input>
@@ -23,6 +24,11 @@
                     <span class="fa fa-search"></span>
                 </button>
             </span>
-        <!--</div>-->
+        </div>
+        <i ng-show="loadingLocations" class="fa fa-sync-alt"></i>
+        <div ng-show="noResults">
+            <i class="fa fa-times"></i>
+            Pa gen anyen
+        </div>
     </div>
 </div>
