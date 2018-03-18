@@ -1,7 +1,30 @@
 <!-- Footer -->
 <footer class="py-5 bg-dark" th:fragment="footer" xmlns:th="http://www.thymeleaf.org">
-      <div class="container">
+    <div class="container">
         <p class="m-0 text-center text-white">Copyright &copy; Ayiti li 2017</p>
-      </div>
-      <!-- /.container -->
-    </footer>
+    </div>
+    <!-- /.container -->
+    <div class="text-center" id="social-container">
+        <div style="margin: 5px;"
+             class="fb-like"
+             data-href="https://www.facebook.com/AyitiLi"
+             data-layout="button_count"
+             data-action="like"
+             data-size="small"
+             data-show-faces="false"
+             data-share="true"
+             size="large">
+        </div>
+        <div style="padding: 5px">
+            <a href="https://twitter.com/intent/tweet?button_hashtag=ayitili"
+               class="twitter-hashtag-button"
+               data-size="large"
+               data-url="ayiti-li.herokuapp.com"
+               data-dnt="true"
+               data-text="Cheke sit AyitiLi ki pou simaye pouvwa lekti bay tout moun, timoun kou granmoun."
+               data-show-count="true">
+                Tweet #ayitili
+            </a>
+        </div>
+    </div>
+</footer>

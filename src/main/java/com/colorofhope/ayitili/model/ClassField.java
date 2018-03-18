@@ -24,6 +24,12 @@ public class ClassField {
           + "<input type=\"text\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\"/>\n"
           + "</div>";
 
+  private static String HTML_TEXTAREA =
+          "<div class=\"form-group\">\n"
+                  + "<label class=\"col-form-label\" for=\"%1$s\">%2$s: </label>\n"
+                  + "<textarea type=\"text\" class=\"form-control\" ng-model=\"object.%1$s\" name=\"%1$s\" rows=5></textarea>\n"
+                  + "</div>";
+
   private static String HTML_PASSWORD =
       "<div class=\"form-group\">\n"
           + "<label class=\"col-form-label\" for=\"%1$s\">%2$s: </label>\n"
@@ -81,6 +87,7 @@ public class ClassField {
 
   static {
     classToHtmlMap.put(String.class.getName(), HTML_STRING);
+    classToHtmlMap.put(TextArea.class.getName(), HTML_TEXTAREA);
     classToHtmlMap.put("password", HTML_PASSWORD);
     classToHtmlMap.put("id", HTML_ID);
     classToHtmlMap.put(Long.class.getName(), HTML_LONG);

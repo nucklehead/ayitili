@@ -137,4 +137,9 @@ public class ModelAttributeControllerAdvice {
   public String stopEditingText() {
     return "Sispann";
   }
+
+  @ModelAttribute("pageVideoPath")
+  public String pageVideoPath() {
+    return "AyitiLi/videos";
+  }
 }

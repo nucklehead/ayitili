@@ -14,6 +14,8 @@ public class ObjectAttributeControllerAdvice {
 
   @Autowired BookRepository bookRepository;
 
+  @Autowired BookAssesmentRepository bookAssesmentRepository;
+
   @Autowired NavRepository navRepository;
 
   @Autowired AuthorRepository authorRepository;
@@ -38,6 +40,16 @@ public class ObjectAttributeControllerAdvice {
   @ModelAttribute("books")
   public List books() {
     return bookRepository.findAll();
+  }
+
+  @ModelAttribute("bookAssesment")
+  public BookAssesment bookAssesment() {
+    return new BookAssesment();
+  }
+
+  @ModelAttribute("bookAssesments")
+  public List bookAssesments() {
+    return bookAssesmentRepository.findAll();
   }
 
   @ModelAttribute("nav")

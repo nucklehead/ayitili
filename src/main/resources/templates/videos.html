@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="fragments/headImports :: head"></head>
+
+    <body ng-app="ayitili-app" ng-controller="modalController">
+        <nav th:replace="fragments/navbar :: nav"></nav>
+        <div class="d-flex" style="margin-top: 20px">
+
+            <nav th:replace="fragments/sidebar :: sidebar"></nav>
+
+            <!-- Page Content -->
+            <div class="content p-4">
+
+
+                <div class="container">
+
+                    <h2>Videyo nou yo</h2>
+                    <div th:replace="fragments/videos :: videos"></div>
+
+                </div>
+                <!-- /.container -->
+
+            </div>
+        </div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </body>
+</html>

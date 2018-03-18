@@ -1,9 +1,7 @@
 package com.colorofhope.ayitili.web;
 
-import com.colorofhope.ayitili.model.Account;
-import com.colorofhope.ayitili.model.Banner;
-import com.colorofhope.ayitili.model.Book;
-import com.colorofhope.ayitili.model.Page;
+import com.colorofhope.ayitili.model.*;
+import com.colorofhope.ayitili.repository.AccountRepository;
 import com.colorofhope.ayitili.repository.BannerRepository;
 import com.colorofhope.ayitili.repository.BookRepository;
 import com.colorofhope.ayitili.repository.PageRepository;
@@ -16,6 +14,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,18 +35,16 @@ public class AppController {
 
   @Autowired PageRepository pageRepository;
 
+  @Autowired
+  AccountRepository accountRepository;
+
   @Autowired AccountController accountController;
 
   @RequestMapping(method = RequestMethod.GET, path = "/")
   public String index(Model model) {
     model.addAttribute("title", "Ayiti li - Akèy");
-    model.addAttribute("optionTitle", "Opsyon ki genyen yo:");
 
-    model.addAttribute("options", optionController.getAll());
-    model.addAttribute("fbVideos", videoController.getFacebookVideos());
-    model.addAttribute("pageVideoPath", "Aigleinfo/videos");
     model.addAttribute("banners", bannerRepository.findAll());
-    //    model.addAttribute("books", bookRepository.findAll());
 
     Integer numBooksPerCarousel = 6;
     model.addAttribute("books", Lists.partition(bookRepository.findAll(), numBooksPerCarousel));
@@ -79,7 +76,6 @@ public class AppController {
   @RequestMapping(method = RequestMethod.GET, path = "/ajouteManm")
   public String addMember(Model model) {
     model.addAttribute("title", "Ayiti li - Ajoute");
-    model.addAttribute("account", new Account());
     return "addAccount";
   }
 
@@ -87,17 +83,26 @@ public class AppController {
   @RequestMapping(method = RequestMethod.GET, path = "/showBanners")
   public String showBanners(Model model) {
     model.addAttribute("title", "Ayiti li - Banyè");
-    model.addAttribute("banners", bannerRepository.findAll());
-    model.addAttribute("banner", new Banner());
     return "bannerList";
   }
 
   @RequestMapping(method = RequestMethod.GET, path = "/showBooks")
   public String showBooks(Model model) {
     model.addAttribute("title", "Ayiti li - Liv");
-    model.addAttribute("books", bookRepository.findAll());
-    model.addAttribute("book", new Book());
     return "bookList";
+  }
+
+  @RequestMapping(method = RequestMethod.GET, path = "/book/list")
+  public String books(Model model) {
+    model.addAttribute("title", "Ayiti li - Liv nou yo");
+    return "books";
+  }
+
+  @RequestMapping(method = RequestMethod.GET, path = "/videos")
+  public String showVideos(Model model) {
+    model.addAttribute("title", "Ayiti li - Videyo");
+    model.addAttribute("fbVideos", videoController.getFacebookVideos());
+    return "videos";
   }
 
   @PreAuthorize("hasAuthority('ADMIN')")
@@ -151,5 +156,19 @@ public class AppController {
   public String listDbImage(Model model) {
     model.addAttribute("title", "Montre imaj yo");
     return "dbImageList";
+  }
+
+  @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('LIBRARIAN') or hasAuthority('MEMBER') ")
+  @RequestMapping(method = RequestMethod.GET, path = "/bookAssesment/{bookID}")
+  public String createAssesment(Model model, Authentication user, @PathVariable String bookID) {
+    Account account = accountRepository.findByUsername(user.getName());
+    Book book = bookRepository.findOne(bookID);
+    model.addAttribute("title", "Ayiti li - Ekri Rapò pou " + book.title + ".");
+    BookAssesment bookAssesment = new BookAssesment();
+    bookAssesment.member = account;
+    bookAssesment.book = book;
+
+    model.addAttribute("bookAssesment", bookAssesment);
+    return "createAssesment";
   }
 }

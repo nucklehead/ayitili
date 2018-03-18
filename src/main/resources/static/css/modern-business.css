@@ -86,3 +86,8 @@ body {
 #custom-search-input .input-group ul {
   width: 100% !important;
 }
+
+.card-body svg{
+  width: 10px;
+  height: 10px
+}
