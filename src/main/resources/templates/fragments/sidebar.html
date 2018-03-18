@@ -1,0 +1,30 @@
+ <!-- Navigation -->
+ <div th:fragment="sidebar" id="nav-side"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+   <nav th:if="${authorized}" class="sidebar bg-dark" style="height: 100%;">
+     <ul class="list-unstyled">
+       <th:block th:each="nav : ${highPrivilegdeNavs}" th:switch="${nav.type}">
+         <li class="nav-item" th:case="${T(com.colorofhope.ayitili.model.NavType).LINK}">
+           <a class="nav-link" th:href="${nav.link}" th:text="${nav.text}"></a>
+         </li>
+         <li th:case="${T(com.colorofhope.ayitili.model.NavType).DROPDOWN}">
+           <a th:href="${'#' + nav.id}" data-toggle="collapse" th:text="${nav.text}"></a>
+           <ul th:id="${nav.id}" class="list-unstyled collapse">
+             <li th:each="subnav : ${nav.dropdown}">
+               <a th:href="${subnav.link}" th:text="${subnav.text}"></a>
+             </li>
+           </ul>
+         </li>
+         <li class="nav-item align-self-center" th:case="${T(com.colorofhope.ayitili.model.NavType).MODAL_BUTTON}">
+           <button class="btn btn-info" type="button" data-toggle="modal" th:attr="data-target=${nav.link}" th:text="${nav.text}"></button>
+         </li>
+         <li class="nav-item" th:case="${T(com.colorofhope.ayitili.model.NavType).FORM_BUTTON}">
+           <form class="form-inline" th:action="${nav.link}">
+             <button class="btn btn-info" type="submit" th:text="${nav.text}"></button>
+           </form>
+         </li>
+       </th:block>
+     </ul>
+   </nav>
+ </div>
+

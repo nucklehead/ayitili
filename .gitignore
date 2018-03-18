@@ -15,3 +15,8 @@ buildNumber.properties
 *.iml
 
 ayitili.log*
+
+db
+
+# Embeded ElasticSearch data
+data

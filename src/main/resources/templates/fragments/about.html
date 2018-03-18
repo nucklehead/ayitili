@@ -1,21 +1,18 @@
  <!-- Features Section -->
-<div class="row" style="margin-top: 30px" th:fragment="about" xmlns:th="http://www.thymeleaf.org">
-  <div class="col-lg-6">
-    <h2>Ayiti li</h2>
-    <p>Lokasyon</p>
-    <ul>
-      <li>
-        <strong>Potoprens</strong>
-      </li>
-      <!--<li>Okap</li>-->
-      <!--<li>Okay</li>-->
-    </ul>
-    <p>Se yon inisyativ pou promote ak ankouraje lekti nan lekòl, gwoup, òganizasyon, nan kay yo ak toupatou an Ayiti.</p>
-    <p>Inisyativ sa-a kreye pou simaye pouvwa lekti bay tout moun, timoun kou granmoun. Li chaje ak pwogram pou ranfòse kapasite pou jènn yo reflechi ak fè bon jan analiz kritik, byen konprann lè y’ap li, apresye sijè tankou Istwa, Syans, Teknoloji ak Matematik, e  ede yo devlope kreyativite, lidèship ak konpetans pou yon bon vi sosyal atrave lekti.</p>
-    <p>Inisyativ Ayiti Li a chaje tou ak pwogram pou bay edikatè, paran, lekol, gwoup ak òganizasyon yo jarèt pou yo kapab kore, promote epi ede Inisyativ la.</p>
-  </div>
-  <div class="col-lg-6">
-    <img class="rounded mx-auto my-auto d-block" src="img/colorofhop-logo.jpg" alt=""/>
-  </div>
-</div>
-<!-- /.row -->
+ <div th:attr="ng-controller=${editMode}?pageEditController" style="margin-top: 30px" th:fragment="about" xmlns:th="http://www.thymeleaf.org">
+     <div th:replace="fragments/rowAlerts :: rowAlerts"></div>
+     <div id="home-about" th:utext="${homePage.bodyRows.get(0).get(0)}"></div>
+     <div th:if="${editMode}" class="btn-group" role="group">
+         <button type="button" class="btn btn-danger btn-circle" ng-if="!inEditMode('home-about')" ng-click="editComponent('home-about')">
+             <span class="fa fa-edit fa-lg"></span>
+         </button>
+         <button type="button" class="btn btn-success btn-circle" ng-if="inEditMode('home-about')" ng-click="saveComponent('home', 'about'); updateComponent(0, 0, 'akèy', 'home-about')">
+             <span class="fa fa-save fa-lg"></span>
+         </button>
+         <button type="button" class="btn btn-info btn-circle" ng-if="inEditMode('home-about')" ng-click="cancelEditComponent('home-about')">
+             <span class="fa fa-times-circle fa-lg"></span>
+         </button>
+     </div>
+     <!-- /.row -->
+ </div>
+

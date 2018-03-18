@@ -4,6 +4,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 public class MemberAction extends DBModel {
   @DBRef public Account member;
+  @BootstrapLabel(value = "Kalite", showInForm = false)
   public MemberActionType type;
 
   public MemberAction() {}

@@ -17,14 +17,14 @@ public class AccountController extends DefaultController<AccountRepository, Acco
   }
 
   @Override
-  public Account create(Account model) throws IOException {
+  public Object create(Account model, String returnPath) throws IOException {
     model.password = passwordEncoder.encode(model.password);
-    return super.create(model);
+    return super.create(model, returnPath);
   }
 
   @Override
-  public Account update(String id, Account model) throws IOException {
+  public Object update(String id, Account model, String returnPath) throws IOException {
     model.password = passwordEncoder.encode(model.password);
-    return super.update(id, model);
+    return super.update(id, model, returnPath);
   }
 }

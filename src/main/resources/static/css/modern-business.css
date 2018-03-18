@@ -49,3 +49,45 @@ body {
   display:block;
   font-size:10px;
 }
+
+.btn-circle {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.badge-button{
+  font-size: 10px;
+  margin-left: 5px;
+  padding: 0px;
+  height: 15px;
+  width: 12px;
+}
+
+#custom-search-input {
+  padding: 18px;
+}
+
+#custom-search-input .input-group input,
+#custom-search-input .input-group > div,
+#custom-search-input .input-group ul {
+  width: 100% !important;
+}
+
+.card-body svg{
+  width: 10px;
+  height: 10px
+}

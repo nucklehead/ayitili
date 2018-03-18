@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/headImports :: head"></head>
+
+<body ng-app="ayitili-app">
+<nav th:replace="fragments/navbar :: nav"></nav>
+<script src="/webjars/html2canvas/1.0.0-alpha.9/dist/html2canvas.min.js"></script>
+
+<script type="text/ng-template" id="tagTemplate.html">
+    <div class="btn btn-info btn-sm" style="margin: 5px; border-radius: 30px" ng-bind-html="match.label | uibTypeaheadHighlight:query"></div>
+</script>
+<div class="d-flex" style="margin-top: 20px">
+
+    <nav th:replace="fragments/sidebar :: sidebar"></nav>
+
+    <!-- Page Content -->
+    <div class="content p-4">
+
+        <!-- Page Content -->
+        <div class="container" ng-controller="pageEditController" th:attr="ng-init=${currentPage}?'pageId=\'' + ${currentPage.id} + '\''">
+
+            <div th:replace="fragments/rowAlerts :: rowAlerts"></div>
+
+            <div class="row justify-content-md-center">
+                <form class="needs-validation col" ng-submit="savePage()" novalidate="" id="pageNameForm">
+                    <div class="form-group">
+                        <label>Non paj la</label>
+                        <input type="text" class="form-control form-control-lg rounded-0" name="name" required="required" ng-model="currentPage.name"/>
+                        <div class="invalid-tooltip" style="position: relative">Fòk ou chwazi on non.</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Lyen paj la</label>
+                        <input type="text" class="form-control form-control-lg rounded-0" name="formatedName"  pattern=".{7,}" required="required" readonly="readonly" value="/page/{{ currentPage.name | lowercase | spaceToDash }}"/>
+                        <div class="invalid-tooltip" style="position: relative">Fòk ou chwazi mete on non pou lyen and fòme.</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Etikèt</label>
+                        <div style="margin: 10px">
+                            <span ng-repeat="tag in currentPage.tags" ng-class="badgeClass(tag.name)" class="badge badge-pill" style="margin: 5px;">
+                            {{ tag.name }}
+                            <span ng-click="removeTag(tag)" class="btn btn-secondary btn-sm badge-button font-weight-bold">&times;</span>
+                        </span>
+                        </div>
+                        <textarea id="input-tag"
+                                  uib-typeahead="tag as tag.name for tag in tags | filter:{name:$viewValue} | limitTo:5"
+                                  typeahead-template-url="tagTemplate.html"
+                                  typeahead-show-hint="true"
+                                  typeahead-min-length="0"
+                                  typeahead-focus-on-select="updateTags()"
+                                  class="form-control form-control-lg rounded-0"
+                                  ng-model="inputTag"
+                                  ng-change="updateTags()"
+                                  ng-trim="false"
+                                  rows="1">
+                        </textarea>
+                    </div>
+                    <button class="btn btn-info" type="submit">Anrejistre Tout</button>
+                </form>
+                <div class="col">
+                    <!--<canvas id="page-preview-canvas" width="450" height="300"></canvas>-->
+                    <h4>Apèsi</h4>
+                    <a data-toggle="modal" data-target="#page-render-modal">
+                        <img class="img-fluid img-thumbnail" ng-src="{{preview}}"/>
+                    </a>
+                </div>
+            </div>
+            <div ng-repeat="row in currentPage.bodyRows track by $index" class="row" style="margin: 50px">
+                <div class="col">
+                    <div class="row">
+                        <div class="col" ng-repeat="col in row track by $index">
+                            <div class="row" >
+                                <div class="col">
+                                    <div id="{{ $parent.$index + '-' + $index }}" ng-bind-html="col"></div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="btn-group-vertical" role="group">
+                                        <button type="button" class="btn btn-primary btn-circle" ng-if="!inEditMode($parent.$index + '-' + $index)" ng-click="editComponent($parent.$parent.$index + '-' + $index)">
+                                            <span class="fa fa-edit fa-lg"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-circle" ng-if="inEditMode($parent.$index + '-' + $index)" ng-click="saveComponent($parent.$parent.$index, $index)">
+                                            <span class="fa fa-save fa-lg"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-info btn-circle" ng-if="inEditMode($parent.$index + '-' + $index)" ng-click="cancelEditComponent($parent.$parent.$index + '-' + $index)">
+                                            <span class="fa fa-times-circle fa-lg"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-circle" ng-click="deleteComponent($parent.$index, $index)">
+                                            <span class="fa fa-trash fa-lg"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-circle" ng-if="!inEditMode($parent.$index + '-' + $index)" ng-click="addColumn($parent.$parent.$index, $index)">
+                                            <span class="fa fa-plus-square fa-lg"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button type="button" class="btn btn-primary btn-circle" ng-click="addRow($index)">
+                            <span class="fa fa-plus-square fa-lg"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="container" id="page-render" ng-show="rendering">
+                <div ng-repeat="row in currentPage.bodyRows track by $index" class="row justify-content-md-center">
+                    <div ng-repeat="col in row track by $index" class="col" ng-bind-html="col"></div>
+                </div>
+            </div>
+            <div th:replace="fragments/modals/pagePreviewModal :: pagePreview(extraClass='modal-fullscreen')"></div>
+
+        </div>
+        <!-- /.container -->
+    </div>
+</div>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

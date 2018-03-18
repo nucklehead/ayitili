@@ -12,6 +12,9 @@ public class DBImage extends DBModel {
   public Date uploadDate;
   public String md5;
 
+  public DBImage() {
+  }
+
   public DBImage(
       String filename,
       long length,

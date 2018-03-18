@@ -26,17 +26,25 @@ public class BannerController extends DefaultController<BannerRepository, Banner
   }
 
   @Override
-  public Banner create(Banner model) throws IOException {
+  public Object create(Banner model, String returnPath) throws IOException {
     String imageId = DBImageRepository.addImageTODB(gridFsTemplate, model.formImage);
     model.image = dbImageRepository.findOne(imageId);
-    return super.create(model);
+    return super.create(model, returnPath);
   }
 
   @Override
-  public Banner update(@PathVariable String id, Banner model) throws IOException {
+  public Object update(@PathVariable String id, Banner model, String returnPath)
+      throws IOException {
     String imageId = DBImageRepository.addImageTODB(gridFsTemplate, model.formImage);
     model.image = dbImageRepository.findOne(imageId);
-    return super.update(id, model);
+    dbImageRepository.delete(repository.findOne(id).image.id);
+    return super.update(id, model, returnPath);
+  }
+
+  @Override
+  public void delete(@PathVariable String id) {
+    dbImageRepository.delete(repository.findOne(id).image.id);
+    super.delete(id);
   }
 
   @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})

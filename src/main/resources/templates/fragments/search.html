@@ -1,13 +1,34 @@
-<div class="col-md-12" style="margin: auto" th:fragment="search" xmlns:th="http://www.thymeleaf.org">
+<div ng-controller="searchController" class="col-md-12" style="margin: auto" th:fragment="search" xmlns:th="http://www.thymeleaf.org">
+    <script type="text/ng-template" id="resultTemplate.html">
+        <div style="margin: 5px;" ng-bind-html="$parent.$parent.$parent.getTemplate(match.model, query)"></div>
+    </script>
     <h3 class="text-center">Chache</h3>
-    <div id="custom-search-input" class="jumbotron" style="padding: 18px">
+    <div id="custom-search-input" class="jumbotron">
         <div class="input-group">
-            <input type="text" class="form-control input-lg" placeholder="Chache" />
+            <input type="text"
+                   placeholder="Chache"
+                   uib-typeahead="result as result.id for result in search($viewValue) | limitTo:5"
+                   typeahead-template-url="resultTemplate.html"
+                   typeahead-show-hint="true"
+                   typeahead-min-length="1"
+                   typeahead-on-select="gotoResult($item, $model, $label, $event)"
+                   typeahead-loading="loadingLocations"
+                   typeahead-no-results="noResults"
+                   class="form-control rounded-0 form-control-lg"
+                   ng-model="inputSearch"
+                   ng-trim="false"
+                   rows="1">
+            </input>
             <span class="input-group-btn">
                 <button class="btn btn-info btn-lg" type="button">
                     <span class="fa fa-search"></span>
                 </button>
             </span>
+        </div>
+        <i ng-show="loadingLocations" class="fa fa-sync-alt"></i>
+        <div ng-show="noResults">
+            <i class="fa fa-times"></i>
+            Pa gen anyen
         </div>
     </div>
 </div>

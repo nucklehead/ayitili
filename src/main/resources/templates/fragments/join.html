@@ -1,10 +1,17 @@
 <!-- Call to Action Section -->
-<div class="row mb-4" th:fragment="join" xmlns:th="http://www.thymeleaf.org">
-    <div class="col-md-8">
-      <h2>Kouman l'ap fèt?</h2>
-      <p>Nap fè tout fòmasyon nan lang <b>kreyòl</b>, nou vle touche konsyans chak ayisyen, nou vle rasire n ke tout moun konprann. Nap fòme moun nan tout 10 depatman yo, nap kòmanse nan Lwès.</p>
+<div class="row mb-4" th:attr="ng-controller=${editMode}?pageEditController" th:fragment="join" xmlns:th="http://www.thymeleaf.org">
+    <div th:replace="fragments/rowAlerts :: rowAlerts"></div>
+    <div id="home-join" th:utext="${homePage.bodyRows.get(1).get(0)}"> </div>
+    <div th:if="${editMode}" class="btn-group" role="group">
+        <button type="button" class="btn btn-danger btn-circle" ng-if="!inEditMode('home-join')" ng-click="editComponent('home-join')">
+            <span class="fa fa-edit fa-lg"></span>
+        </button>
+        <button type="button" class="btn btn-success btn-circle" ng-if="inEditMode('home-join')" ng-click="saveComponent('home', 'join'); updateComponent(1, 0, 'akèy', 'home-join')">
+            <span class="fa fa-save fa-lg"></span>
+        </button>
+        <button type="button" class="btn btn-info btn-circle" ng-if="inEditMode('home-join')" ng-click="cancelEditComponent('home-join')">
+            <span class="fa fa-times-circle fa-lg"></span>
+        </button>
     </div>
-    <div class="col-md-4">
-      <a class="btn btn-lg btn-secondary btn-block" href="@{https://www.paypal.com/cgi-bin/webscr(cmd='_s-xclick', hosted_button_id='TEY4PGWSCTPQC')}">Sipòte nou</a>
-    </div>
+
 </div>

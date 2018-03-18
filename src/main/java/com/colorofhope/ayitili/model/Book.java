@@ -113,4 +113,5 @@ public class Book extends DBModel {
   public void setFormImage(MultipartFile formImage) {
     this.formImage = formImage;
   }
+
 }

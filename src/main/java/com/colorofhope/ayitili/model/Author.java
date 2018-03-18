@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 public class Author extends DBModel {
   public String firstName;
   public String lastName;
+  @SearchResponseIgnore
   public String biography;
   @DBRef public List<Category> categories;
 

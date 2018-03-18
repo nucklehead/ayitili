@@ -1,7 +1,7 @@
 package com.colorofhope.ayitili.service;
 
 import com.colorofhope.ayitili.model.Account;
-import com.colorofhope.ayitili.model.AccounteType;
+import com.colorofhope.ayitili.model.AccountType;
 import com.colorofhope.ayitili.repository.AccountRepository;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class MongoDBUserDetailsService implements UserDetailsService {
     this.appName = appName;
     this.adminUsername = adminUsername;
     this.adminPassword = adminPassword;
-    Account adminAccount = accountRepository.findByType(AccounteType.ADMIN);
+    Account adminAccount = accountRepository.findByType(AccountType.ADMIN);
     if (adminAccount == null) {
       adminAccount = new Account();
     }
@@ -45,7 +45,7 @@ public class MongoDBUserDetailsService implements UserDetailsService {
     adminAccount.phone = "";
     adminAccount.firstName = appName.split("-")[0];
     adminAccount.lastName = appName.split("-")[1];
-    adminAccount.type = AccounteType.ADMIN;
+    adminAccount.type = AccountType.ADMIN;
     adminAccount.points = 0L;
     accountRepository.save(adminAccount);
   }

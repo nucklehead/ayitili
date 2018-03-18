@@ -1,23 +1,40 @@
- <div class="container" th:fragment="objectList" xmlns:th="http://www.thymeleaf.org">
+ <div class="container" data-spy="scroll" th:fragment="objectList" xmlns:th="http://www.thymeleaf.org" >
      <div class="row">
          <div class="col-md" th:each="field: ${object.findBootstrapHtmlDisplayFieldNames()}">
              <strong th:text="${field}"></strong>
+         </div>
+         <div class="col-md">
+             <strong th:text="${changeButtonText}"></strong>
+         </div>
+         <div class="col-md">
+             <strong th:text="${deleteButtonText}"></strong>
          </div>
      </div>
      <hr class="divider"/>
 
      <div th:each="object: ${objects}">
-         <div class="row">
+         <div class="row" th:id="${object.id}">
              <div class="col-md" th:each="bootstrapField: ${object.classToBootstrapDisplay()}" th:utext="${bootstrapField.htmlCode}"></div>
+
+             <div class="col-md align-self-center">
+                 <button type="button" class="btn btn-danger btn-circle" th:attr="ng-click='showFormModal(\'' + ${path.substring(1).replaceAll('/', '-')} + '-edit\', \'put\', '+ ${object.toJSON()}+')'">
+                     <span class="fa fa-edit fa-lg"></span>
+                 </button>
+             </div>
+             <form class="form-inline col-md" th:attr="ng-submit='delete(\'' + ${path + '/' + object.id} + '\')'">
+                 <button type="submit" class="btn btn-danger btn-circle">
+                     <span class="fa fa-trash fa-lg"></span>
+                 </button>
+             </form>
          </div>
          <hr class="divider"/>
      </div>
 
      <hr class="divider"/>
      <div class="row">
-         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addObjectModal" th:text="${addButtonText}"></button>
+         <button type="button" class="btn btn-primary" th:attr="ng-click='showFormModal(\'' + ${path.substring(1).replaceAll('/', '-')} + '-edit\', \'post\')'" th:text="${addButtonText}"></button>
      </div>
 
-     <div th:replace="fragments/modals/modelEdit :: modelEdit"></div>
+     <div th:replace="fragments/modals/modelEdit :: modelEdit(path=${path}, objects=${objects}, object=${object}, showAllinForm=true)"></div>
 
  </div>

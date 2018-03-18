@@ -1,0 +1,23 @@
+<div class="row" th:fragment="rowAlerts" xmlns:th="http://www.thymeleaf.org">
+    <div id="success-alert{{ componentID }}" class="alert alert-success alert-dismissible" role="alert" style="display:none;">
+        <button type="button" class="close" ng-click="hideAlert('success-alert' + componentID)" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Sa byen pase!</strong> Ou anrejistre non paj la.
+    </div>
+    <div id="update-alert{{ componentID }}" class="alert alert-info alert-dismissible" role="alert" style="display:none;">
+        <button type="button" class="close" ng-click="hideAlert('update-alert' + componentID)" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>On pati fini!</strong>
+        <p ng-bind-html="update"></p>
+    </div>
+    <div id="error-alert{{ componentID }}" class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+        <button type="button" class="close" ng-click="hideAlert('error-alert' + componentID)" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Oh oh! Bagay yo myèl!</strong>
+        <br/>
+        {{ error }}.
+    </div>
+</div>

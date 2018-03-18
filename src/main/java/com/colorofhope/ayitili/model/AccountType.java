@@ -1,10 +1,12 @@
 package com.colorofhope.ayitili.model;
 
-public enum AccounteType {
+public enum AccountType {
   @BootstrapLabel("Administratè")
   ADMIN,
   @BootstrapLabel("Bibliyotekè")
   LIBRARIAN,
   @BootstrapLabel("Manm")
-  MEMBER
+  MEMBER,
+  @BootstrapLabel("Visitè")
+  GUEST_MEMBER,
 }

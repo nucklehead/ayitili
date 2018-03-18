@@ -1,23 +1,47 @@
  <!-- Navigation -->
- <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="nav"
-      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-      <div class="container">
-        <a class="navbar-brand" href="/" th:inline="text">[[${siteName}]] <small th:text="${siteSubtitle}"></small></a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item" th:each="navLinkKV : ${navLinks}">
-              <a class="nav-link" th:href="${navLinkKV.value}" th:text="${navLinkKV.key}"></a>
-            </li>
-            <li class="nav-item" th:each="navButtonKV : ${navButtons}">
-              <button class="btn btn-info" type="button" data-toggle="modal" th:attr="data-target=${navButtonKV.value}" th:text="${navButtonKV.key}"></button>
-            </li>
-            <form class="form-inline" th:action="${navFormKV.value}" th:each="navFormKV : ${navForms}">
-              <button class="btn btn-info" type="submit" th:text="${navFormKV.key}"></button>
-            </form>
-          </ul>
-        </div>
-      </div>
-    </nav>
+ <div th:fragment="nav" id="nav-header"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" th:attr="ng-controller=${editMode}?editController">
+   <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+     <div class="container">
+       <a th:if="${authorized}"  class="sidebar-toggle text-light mr-3"><i class="fa fa-bars"></i></a>
+       <a class="navbar-brand" href="/" th:inline="text">[[${siteName}]] <small th:text="${siteSubtitle}"></small></a>
+       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+       </button>
+       <div class="collapse navbar-collapse" id="navbarResponsive">
+         <ul class="navbar-nav ml-auto">
+           <th:block th:each="nav : ${accessibleNavs}" th:switch="${nav.type}">
+             <li class="nav-item" th:case="${T(com.colorofhope.ayitili.model.NavType).LINK}">
+               <a class="nav-link" th:href="${nav.link}" th:text="${nav.text}"></a>
+             </li>
+             <li class="nav-item dropdown" th:case="${T(com.colorofhope.ayitili.model.NavType).DROPDOWN}">
+               <a class="nav-link dropdown-toggle" data-toggle="dropdown" th:text="${nav.text}"></a>
+               <div class="dropdown-menu">
+                 <a class="dropdown-item" th:each="subnav : ${nav.dropdown}" th:href="${subnav.link}" th:text="${subnav.text}"></a>
+               </div>
+             </li>
+             <li class="nav-item align-self-center" th:case="${T(com.colorofhope.ayitili.model.NavType).MODAL_BUTTON}">
+               <button class="btn btn-info" type="button" data-toggle="modal" th:attr="data-target=${nav.link}" th:text="${nav.text}"></button>
+             </li>
+             <form class="form-inline" th:action="${nav.link}" th:case="${T(com.colorofhope.ayitili.model.NavType).FORM_BUTTON}">
+               <button class="btn btn-info" type="submit" th:text="${nav.text}"></button>
+             </form>
+           </th:block>
+           <li th:if="${editMode == null and authorized}" class="nav-item align-self-center" style="padding-left: 5px">
+             <a class="btn btn-danger" type="button" th:href="${#httpServletRequest.requestURI.replaceAll('/$', '') + '/edit/'}" th:text="${goToEditText}"></a>
+           </li>
+           <li th:if="${editMode}" class="nav-item align-self-center" style="padding-left: 5px">
+             <a class="btn btn-danger" type="button" href="../" th:text="${stopEditingText}"></a>
+           </li>
+         </ul>
+       </div>
+       <button th:if="${editMode}" type="button" class="btn btn-danger btn-circle" ng-click="showModal('api-nav')">
+         <span class="fa fa-edit fa-lg"></span>
+       </button>
+     </div>
+   </nav>
+
+   <div th:replace="fragments/modals/objectListModal :: objectListModal(path='/api/nav', objects=${navs}, object=${nav}, editMode=${editMode})"></div>
+
+ </div>
+

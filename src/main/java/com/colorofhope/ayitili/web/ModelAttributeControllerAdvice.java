@@ -1,47 +1,66 @@
 package com.colorofhope.ayitili.web;
 
-import com.colorofhope.ayitili.model.AccounteType;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import com.colorofhope.ayitili.model.AccountType;
+import com.colorofhope.ayitili.model.Nav;
+import com.colorofhope.ayitili.repository.NavRepository;
+import java.util.*;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice
 public class ModelAttributeControllerAdvice {
+  @Autowired NavRepository navRepository;
 
-  @ModelAttribute("navLinks")
-  public Map navlinks(Authentication user) {
-    Map<String, String> navLinks = new LinkedHashMap<>();
-    navLinks.put("Akèy", "/");
-    navLinks.put("Liv", "/showBooks");
+  @ModelAttribute("accessibleNavs")
+  public List<Nav> accessibleNavs(Authentication user) {
+    List<Nav> allNavs = navRepository.findAll();
+    allNavs.sort(Comparator.comparing(Nav::getType).thenComparing(Nav::getText));
+    List<AccountType> userAccess = new ArrayList<>();
     if (user != null) {
-      if (user.getAuthorities().contains(new SimpleGrantedAuthority(AccounteType.ADMIN.name()))) {
-        navLinks.put("Ajoute manm", "/ajouteManm");
-        navLinks.put("Montre Banyè yo", "/showBanners");
-      }
-      navLinks.put("Kont:" + user.getName(), "#");
+      userAccess.addAll(
+          user.getAuthorities()
+              .stream()
+              .map(authority -> AccountType.valueOf(authority.getAuthority()))
+              .collect(Collectors.toList()));
+    } else {
+      userAccess.add(AccountType.GUEST_MEMBER);
     }
-    return navLinks;
+    List<Nav> accessibleNavs =
+        allNavs
+            .stream()
+            .filter(nav -> nav.accessTypes.containsAll(userAccess))
+            .collect(Collectors.toList());
+    accessibleNavs.removeAll(highPrivilegdeNavs(user));
+    return accessibleNavs;
   }
 
-  @ModelAttribute("navButtons")
-  public Map navButtons(Authentication user) {
-    Map<String, String> navButtons = new LinkedHashMap<>();
-    if (user == null) {
-      navButtons.put("Antre", "#antre");
+  @ModelAttribute("highPrivilegdeNavs")
+  public List<Nav> highPrivilegdeNavs(Authentication user) {
+    if(!authorized(user)){
+      return Arrays.asList();
     }
-    return navButtons;
+    List<AccountType> highPrivilegdes = Arrays.asList(AccountType.LIBRARIAN, AccountType.ADMIN);
+    List<Nav> allNavs = navRepository
+            .findAll()
+            .stream()
+            .filter(nav -> highPrivilegdes.containsAll(nav.accessTypes))
+            .collect(Collectors.toList());
+    allNavs.sort(Comparator.comparing(Nav::getType).thenComparing(Nav::getText));
+    return allNavs;
   }
 
-  @ModelAttribute("navForms")
-  public Map navForms(Authentication user) {
-    Map<String, String> navForms = new LinkedHashMap<>();
-    if (user != null) {
-      navForms.put("Soti", "/logout");
-    }
-    return navForms;
+  @ModelAttribute("authorized")
+  public Boolean authorized(Authentication user) {
+    return user != null
+        && Arrays.asList(AccountType.ADMIN, AccountType.LIBRARIAN)
+            .containsAll(
+                user.getAuthorities()
+                    .stream()
+                    .map(authority -> AccountType.valueOf(authority.getAuthority()))
+                    .collect(Collectors.toList()));
   }
 
   @ModelAttribute("author")
@@ -92,5 +111,35 @@ public class ModelAttributeControllerAdvice {
   @ModelAttribute("loginButtonText")
   public String loginButtonText() {
     return "Antre";
+  }
+
+  @ModelAttribute("changeButtonText")
+  public String changeButtonText() {
+    return "Change";
+  }
+
+  @ModelAttribute("deleteButtonText")
+  public String deleteButtonText() {
+    return "Efase";
+  }
+
+  @ModelAttribute("signupButtonText")
+  public String signupButtonText() {
+    return "Anrejistre";
+  }
+
+  @ModelAttribute("goToEditText")
+  public String goToEditText() {
+    return "Change";
+  }
+
+  @ModelAttribute("stopEditingText")
+  public String stopEditingText() {
+    return "Sispann";
+  }
+
+  @ModelAttribute("pageVideoPath")
+  public String pageVideoPath() {
+    return "AyitiLi/videos";
   }
 }

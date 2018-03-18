@@ -1,0 +1,1 @@
+var app = angular.module('ayitili-app', ['ngSanitize', 'datatables', 'ui.bootstrap', 'duScroll']);

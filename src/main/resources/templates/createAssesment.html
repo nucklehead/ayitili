@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="fragments/headImports :: head"></head>
+
+    <body>
+        <nav th:replace="fragments/navbar :: nav"></nav>
+        <div class="d-flex" style="margin-top: 20px">
+
+            <nav th:replace="fragments/sidebar :: sidebar"></nav>
+
+            <!-- Page Content -->
+            <div class="content p-4">
+                <h2>
+                    <span th:text="${title}" th:remove="tag"></span>
+                    <small class="text-muted" th:text="${'Otè: ' + bookAssesment.member.username}"></small>
+                </h2>
+
+                <!-- Page Content -->
+                <div class="container">
+
+                  <form th:replace="fragments/forms/modelInput :: modelEdit(path='/api/bookAssesment', object=${bookAssesment}, showAllinForm=false)"></form>
+
+                </div>
+                <!-- /.container -->
+
+            </div>
+        </div>
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </body>
+</html>
